@@ -41,12 +41,12 @@ set(Ucglib_RECURSE True)
 # same with extra tabs or space after the #include "blah.h"
 #
 SET(libPrefix ${ARDUINO_DEFAULT_BOARD}_)
-
+include_directories(touchScreen)
 # This reduces size by 10% or so
 #ADD_DEFINITIONS("-ffunction-sections -fdata-sections ")
-generate_arduino_firmware(il9341 
-                SKETCH GraphicsTest.ino
-                SRCS thecode.cpp ili_touch.cpp
+generate_arduino_firmware(touchscreen_demo 
+                SKETCH dummy_sketch.ino
+                SRCS mainApp.cpp touchScreen/ili_touch.cpp
                 LIBS ${libPrefix}Ucglib 
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}

@@ -48,8 +48,6 @@ Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ PA2, /*cs=*/ PA0, /*reset=*/ PA1);
 iliTouch  *ts=NULL;
 void mySetup(void)
 {
-  
-    
   SPI.begin();
   SPI.setBitOrder(MSBFIRST); // Set the SPI bit order
   SPI.setDataMode(SPI_MODE0); //Set the  SPI data mode 0
@@ -57,27 +55,31 @@ void mySetup(void)
 
   Serial.begin();
   Serial.println("Start");
-  ucg.begin(UCG_FONT_MODE_TRANSPARENT);
-  ucg.setFont(ucg_font_ncenR14_hr);
-  ucg.clearScreen();
-  
+  ucg.begin(UCG_FONT_MODE_SOLID);
+  ucg.setFont(ucg_font_ncenR24_hr);
+  ucg.clearScreen();  
   ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
-  ucg.begin(UCG_FONT_MODE_TRANSPARENT);
-  ucg.setFont(ucg_font_ncenR14_hr);
-  ucg.clearScreen();
-
 }
 
 
 uint8_t r = 0;
+static char bfer[100];
 void myLoop(void)
 {
   int x,y;
+  static int count=0;
     if(!ts->press(x,y))
-    {
-        
+    {        
         return;
     }
-    ucg.drawCircle(x,y,3,0x555);
+  ucg.drawCircle(x,y,3,0x555);
+  count++;
+  if(count>20)
+  {
+    count=0;
+    sprintf(bfer,"%d x %d     ",x,y);
+    ucg.drawString(30,30,1,bfer);
+    
+  }
 
 }

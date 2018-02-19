@@ -29,10 +29,8 @@ bool Serializer::serialize(char *out,const char *kind, const char *name,const ch
  */
 bool Serializer::serialize(char *out,const char *kind, const char *name,const char *one, const char *two, const char *three)
 {
-    strcpy(out,kind);
-    strcat(out,":");
-    strcat(out,name);
-    
+    strcpy(out,kind);    
+    append(out,name);
     append(out,one);
     append(out,two);
     append(out,three);
@@ -40,47 +38,24 @@ bool Serializer::serialize(char *out,const char *kind, const char *name,const ch
 }
 /**
  */
- bool DeSerializer::deserialize(const char *input, char *kind, char *name, int &args, char **arg)
+ bool DeSerializer::deserialize( char *input,  int &args, const char **arg)
 {
-    const char *head=input;
-    // at least a :
-    const char *cur=strstr(head,":");
-    if(!cur)
-    {
-        return false;
-    }
-    int l=cur-head;
-    strncpy(kind,head,l);
-    kind[l]=0;
-    head=cur+1;
-    
-    cur=strstr(head,";");
-    if(!cur)
-    {
-        strcpy(name,head);
-        args=0;
-        return true;                
-    }
-    l=cur-head;
-    strncpy(name,head,l);
-    name[l]=0;
-    args=1;
-    head=cur+1;
-    
+    char *head=input;  
+    char *cur;
+    args=0;
     while(strlen(head))
     {
          cur=strstr(head,";");
          if(!cur)
          {
-                strcpy(arg[args],head);
+                arg[args]=head;
                 args++;
                 return true;        
          }
          // split
-         l=cur-head;
-         strncpy(arg[args],head,l);
-         arg[args][l]=0;            
-         arg++;
+         *cur=0;
+         arg[args]=head;
+         args++;
          head=cur+1;         
     }    
     return true;    

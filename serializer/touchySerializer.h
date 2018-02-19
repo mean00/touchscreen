@@ -20,6 +20,5 @@ public:
 class DeSerializer
 {
 public:
-    static bool deserialize(const char *input, char *kind, char *name, int &args, char **arg);
-    
+    static bool deserialize( char *input,  int &args, const char **arg);    // input is modified in place !
 };

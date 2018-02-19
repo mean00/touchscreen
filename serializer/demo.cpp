@@ -51,29 +51,50 @@ void loop(void)
 
     char out[256];
     char deser[256];
-    char *arg[3];
+    const char *arg[5];
     char kind[10];
     char name[10];
     int  args;
+
+#define ARGS(x) \
+      CHECK(args==x);         \
+    for(int i=0;i<x;i++) \
+        Serial.println(arg[i]);
     
     
     arg[0]=deser;
     arg[1]=deser+50;
     arg[2]=deser+100;
+    arg[3]=deser+150;
+    arg[4]=deser+200;
+    
     Serializer::serialize(out,(char *)"SCR","IDLE","Time","GB","BEEP");
     Serial.println(out);
     //
-     DeSerializer::deserialize(out, kind, name, args, arg);
-     CHECK(args==3);
-     CHECK(!strcmp(kind,"SCR"));
-    
+    DeSerializer::deserialize(out, args, arg);
+    ARGS(5);
+    Serial.println("-----------");
     
     Serializer::serialize(out,"SCR","MEGA","alpha","Beta");
     Serial.println(out);
+    DeSerializer::deserialize(out, args, arg);
+    ARGS(4);
+    Serial.println("-----------");
+
+    
+    
     Serializer::serialize(out,"Event","foo","one");
     Serial.println(out);
+    DeSerializer::deserialize(out, args, arg);
+    ARGS(3);
+    Serial.println("-----------");
+
     Serializer::serialize(out,"zelda","syphon");
     Serial.println(out);
+    DeSerializer::deserialize(out, args, arg);
+    ARGS(2);
+    Serial.println("-----------");
+
     
     delay(3000);
 }

@@ -39,16 +39,35 @@
 void setup(void)
 {
         Serial.begin();
+        delay(3000);
         Serial.println("READY!");
 }
 
+
+#define CHECK(x) if(!(x)) {Serial.println("Test " #x "Failed!!!");}
 
 void loop(void)
 {
 
     char out[256];
+    char deser[256];
+    char *arg[3];
+    char kind[10];
+    char name[10];
+    int  args;
+    
+    
+    arg[0]=deser;
+    arg[1]=deser+50;
+    arg[2]=deser+100;
     Serializer::serialize(out,(char *)"SCR","IDLE","Time","GB","BEEP");
     Serial.println(out);
+    //
+     DeSerializer::deserialize(out, kind, name, args, arg);
+     CHECK(args==3);
+     CHECK(!strcmp(kind,"SCR"));
+    
+    
     Serializer::serialize(out,"SCR","MEGA","alpha","Beta");
     Serial.println(out);
     Serializer::serialize(out,"Event","foo","one");

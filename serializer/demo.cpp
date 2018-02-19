@@ -35,6 +35,7 @@
 
 */
 #include "Arduino.h"
+#include "touchySerializer.h"
 void setup(void)
 {
         Serial.begin();
@@ -45,4 +46,15 @@ void setup(void)
 void loop(void)
 {
 
+    char out[256];
+    Serializer::serialize(out,(char *)"SCR","IDLE","Time","GB","BEEP");
+    Serial.println(out);
+    Serializer::serialize(out,"SCR","MEGA","alpha","Beta");
+    Serial.println(out);
+    Serializer::serialize(out,"Event","foo","one");
+    Serial.println(out);
+    Serializer::serialize(out,"zelda","syphon");
+    Serial.println(out);
+    
+    delay(3000);
 }

@@ -25,6 +25,7 @@ set(ARDUINO_CPUMENU .menu.cpu.${ARDUINO_CPU})
 SET(CUSTOM_LIB_DIR /home/fx/Arduino/libraries)
 
 link_directories( ${CUSTOM_LIB_DIR})
+include_directories(${CMAKE_SOURCE_DIR})
 #
 SET(libPrefix ${ARDUINO_DEFAULT_BOARD}_)
 include_directories(touchScreen)

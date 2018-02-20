@@ -144,24 +144,71 @@ void drawSdCard(Ucglib *ucg, int x, int y, int w)
   }
 }
 
-void drawAskIngest(Ucglib *ucg, int type)
+void drawButton(Ucglib *ucg, int x, int y, int type)
 {
-  ucg->setColor(0, 255, 255, 255); // withe color for the text
+  int button_width = 100;
+  int button_height = 32;
+  int str_y = y + button_height / 2 + 8;
 
+  switch (type)
+  {
+  // Confirm button
+  case 1:
+  {
+    ucg->setColor(0, 135, 184, 108);
+    // TODO Center text!!!
+    ucg->drawString(x + 22, str_y, 0, "YES");
+  }
+  break;
+
+  // Cancel button
+  case 2:
+  {
+    ucg->setColor(0, 204, 95, 85);
+    // TODO Center text!!!
+    ucg->drawString(x + 22, str_y, 0, "NO");
+  }
+  break;
+
+  default:
+  {
+    ucg->setColor(0, 0, 0, 0);
+    // TODO Center text!!!
+    ucg->drawString(x + 22, str_y, 0, "OK");
+  }
+  }
+  // button shape
+  ucg->drawRFrame(x, y, button_width, button_height, 2);
+}
+
+void drawAskIngest(Ucglib *ucg, int type)
+{ 
   switch(type){
     case TYPE_SD:
       {
-              
+        int sd_width = 40;
+        drawSdCard(ucg, ucg->getWidth() / 2 - sd_width / 2, 20, sd_width);
       }
       break;
     case TYPE_USB:
       {
-
+        // TODO Make a icon...
+        ucg->setColor(0, 94, 122, 231);
+        ucg->drawString(30, 20, 0, "USB");
       }
       break;
   }
 
+  ucg->setColor(0, 255, 255, 255);
+
+  // TODO Center text!!!
+  ucg->drawString(30, 132, 0, "Do you want to copy?");
+
+  drawButton(ucg, 30 , ucg->getHeight() - 50, 2);
+  drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 50, 1);
 }
+
+
 
 //---
 void draw(Ucglib *ucg)
@@ -169,10 +216,10 @@ void draw(Ucglib *ucg)
 
   //drawBattery(ucg, 94);
   
-  drawSdCard(ucg, 30, 100, 20);
+  /*drawSdCard(ucg, 30, 100, 20);
   drawSdCard(ucg, 60, 100, 40);
   drawSdCard(ucg, 110, 100, 60);
-  drawSdCard(ucg, 180, 100, 80);
+  drawSdCard(ucg, 180, 100, 80);*/
 
-  //drawAskIngest(ucg, TYPE_SD);
+  drawAskIngest(ucg, TYPE_SD);
 }

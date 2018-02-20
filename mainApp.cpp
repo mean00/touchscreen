@@ -44,8 +44,11 @@
 #include "serialIo.h"
 #include "touchySerializer.h"
 
+#define BOOT_SCREEN
+
 ScreenManager *manager=NULL;
 extern Screen *dummySpawner(const char **args);
+extern Screen *bootSpawner(const char **args);
 
 
 #define TS_INTERRUPT_PIN PB6
@@ -64,16 +67,21 @@ void mySetup(void)
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
   ucg.setRotate90();
-  ucg.setFont(ucg_font_helvB18_tf);//ucg_font_helvB18_tf
+  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
   ucg.clearScreen();  
   ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);
   manager->registerScreen("dummy",2,dummySpawner);
+  manager->registerScreen("boot",0,bootSpawner);
   
+#ifndef BOOT_SCREEN  
   char *args[2]={"50","1200"};
   manager->spawnScreen("dummy",2,(const char **)args);
+#else
+   manager->spawnScreen("boot",0,NULL);
+#endif
 }
 
 void myLoop(void)
@@ -83,6 +91,11 @@ void myLoop(void)
   static char *input;
   static const char *args[10];
   
+#if defined(BOOT_SCREEN)
+  
+  manager->redraw();
+  delay(500);
+#else
   
     if(!ts->press(x,y))
     {        
@@ -98,11 +111,12 @@ void myLoop(void)
             {
                 if(!strcmp(args[0],"SCR"))
                 {
+                   // ucg.clearScreen();
                     manager->spawnScreen(args[1],nbArgs-2,args+2);
                 }
             }
         }
     }
-    
+#endif    
   
 }

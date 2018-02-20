@@ -16,6 +16,7 @@ public:
         bool spawnScreen(const char *name, int nb, const char **arg);
         bool clicked(int x,int y);
         bool registerScreen(const char *name, int nbArgs,ScreenSpawner *spawner );
+        bool redraw();
 protected:
         Screen *currentScreen;
         std::vector <screenEntry *>entries;

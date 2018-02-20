@@ -49,7 +49,7 @@ include_directories(screenManager)
 #ADD_DEFINITIONS("-ffunction-sections -fdata-sections ")
 generate_arduino_firmware(touchscreen_demo 
                 SKETCH dummy_sketch.ino
-                SRCS mainApp.cpp touchScreen/ili_touch.cpp serializer/touchySerializer.cpp serial_io/serialIo.cpp  screenManager/screenManager.cpp screens/dummyScreen.cpp
+                SRCS mainApp.cpp touchScreen/ili_touch.cpp serializer/touchySerializer.cpp serial_io/serialIo.cpp  screenManager/screenManager.cpp screens/dummyScreen.cpp screens/bootScreen.cpp
                 LIBS ${libPrefix}Ucglib 
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}

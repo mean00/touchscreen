@@ -42,9 +42,10 @@
 
 #include "screenManager.h"
 #include "serialIo.h"
+#include "touchySerializer.h"
 
 ScreenManager *manager=NULL;
-extern Screen *dummySpawner(char **args);
+extern Screen *dummySpawner(const char **args);
 
 
 #define TS_INTERRUPT_PIN PB6
@@ -72,17 +73,36 @@ void mySetup(void)
   manager->registerScreen("dummy",2,dummySpawner);
   
   char *args[2]={"50","1200"};
-  manager->spawnScreen("dummy",2,args);
+  manager->spawnScreen("dummy",2,(const char **)args);
 }
 
 void myLoop(void)
 {
   int x,y;
   static int count=0;
+  static char *input;
+  static const char *args[10];
+  
+  
     if(!ts->press(x,y))
     {        
         manager->clicked(x,y);
     }
     arduinoSerial::run();
+    if(arduinoSerial::hasString(&input))
+    {
+        int nbArgs;
+        if(DeSerializer::deserialize((char *)input,nbArgs,(const char **)args))  // char *input,  int &args, const char **arg);    
+        {
+            if(nbArgs>2)
+            {
+                if(!strcmp(args[0],"SCR"))
+                {
+                    manager->spawnScreen(args[1],nbArgs-2,args+2);
+                }
+            }
+        }
+    }
+    
   
 }

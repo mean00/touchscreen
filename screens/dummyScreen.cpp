@@ -102,7 +102,13 @@ void dummyScreen::draw(Ucglib *ucg)
   {
       sprintf(str,"Free : %d GB",sz);
   }
+  ucg->setColor(0,0,0);
+  ucg->drawBox(0,130-20, ucg->getWidth(),20);
+  ucg->setColor(0xff,0xff,0xff);  
   centeredPrint(ucg,str,130);
+  ucg->setColor(0,0,0);
+  ucg->drawBox(0,190-20, ucg->getWidth(),20);
+  ucg->setColor(0xff,0xff,0xff);  
   centeredPrint(ucg,"Mon Jan 02 15:04",190);
 
   
@@ -118,7 +124,7 @@ bool dummyScreen::touched(int x, int y)
 }
 
 
-Screen *dummySpawner(char **args)
+Screen *dummySpawner(const char **args)
 {
     int bat=atoi(args[0]);
     int fre=atoi(args[1]);

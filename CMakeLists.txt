@@ -42,7 +42,7 @@ set(Ucglib_RECURSE True)
 #
 SET(libPrefix ${ARDUINO_DEFAULT_BOARD}_)
 include_directories(touchScreen)
-include_directories(touchySerializer)
+include_directories(serializer)
 include_directories(serial_io)
 include_directories(screenManager)
 # This reduces size by 10% or so

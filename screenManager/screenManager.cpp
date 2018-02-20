@@ -16,7 +16,7 @@ bool ScreenManager::registerScreen(const char *name, int nbArgs,ScreenSpawner *s
     
     entries.push_back(entry);
 }
-bool ScreenManager::spawnScreen(const char *name, int nb, char **arg)
+bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
 {
     int n=entries.size();
     int found=-1;

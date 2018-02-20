@@ -1,0 +1,23 @@
+
+#include "screen.h"
+#include "vector"
+typedef Screen *ScreenSpawner(char **args);
+typedef struct screenEntry
+{
+    const char      *screenName;
+    ScreenSpawner   *spawner;
+    int             nbArg;
+};
+
+class ScreenManager
+{
+public:
+             ScreenManager(Ucglib *theucg);
+        bool spawnScreen(const char *name, int nb, char **arg);
+        bool clicked(int x,int y);
+        bool registerScreen(const char *name, int nbArgs,ScreenSpawner *spawner );
+protected:
+        Screen *currentScreen;
+        std::vector <screenEntry *>entries;
+        Ucglib *ucg;
+};

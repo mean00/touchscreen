@@ -16,6 +16,14 @@ bool ScreenManager::registerScreen(const char *name, int nbArgs,ScreenSpawner *s
     
     entries.push_back(entry);
 }
+bool ScreenManager::redraw()
+{
+    if(currentScreen)
+    {
+        currentScreen->draw(ucg);
+    }
+    return true;
+}
 bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
 {
     int n=entries.size();

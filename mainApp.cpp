@@ -44,8 +44,11 @@
 #include "serialIo.h"
 #include "touchySerializer.h"
 
+#define BOOT_SCREEN
+
 ScreenManager *manager=NULL;
 extern Screen *dummySpawner(const char **args);
+extern Screen *bootSpawner(const char **args);
 
 
 #define TS_INTERRUPT_PIN PB6
@@ -71,9 +74,14 @@ void mySetup(void)
   // start Screen Manager
   manager=new ScreenManager (&ucg);
   manager->registerScreen("dummy",2,dummySpawner);
+  manager->registerScreen("boot",0,bootSpawner);
   
+#ifndef BOOT_SCREEN  
   char *args[2]={"50","1200"};
   manager->spawnScreen("dummy",2,(const char **)args);
+#else
+   manager->spawnScreen("boot",0,NULL);
+#endif
 }
 
 void myLoop(void)
@@ -83,6 +91,11 @@ void myLoop(void)
   static char *input;
   static const char *args[10];
   
+#if defined(BOOT_SCREEN)
+  
+  manager->redraw();
+  delay(500);
+#else
   
     if(!ts->press(x,y))
     {        
@@ -104,6 +117,6 @@ void myLoop(void)
             }
         }
     }
-    
+#endif    
   
 }

@@ -63,7 +63,7 @@ void mySetup(void)
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
   ucg.setRotate90();
-  ucg.setFont(ucg_font_ncenB18_tf);//ucg_font_ncenR24_hr);
+  ucg.setFont(ucg_font_helvB18_tf);//ucg_font_helvB18_tf
   ucg.clearScreen();  
   ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
   

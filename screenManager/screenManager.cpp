@@ -44,6 +44,7 @@ bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
         Serial.println("COM;spawning failed");
         return false;
     }
+    currentScreen->setParent(this);
     currentScreen->draw(ucg);
     return true;
 }

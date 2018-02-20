@@ -64,7 +64,7 @@ void mySetup(void)
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
   ucg.setRotate90();
-  ucg.setFont(ucg_font_helvB18_tf);//ucg_font_helvB18_tf
+  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
   ucg.clearScreen();  
   ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
   
@@ -98,6 +98,7 @@ void myLoop(void)
             {
                 if(!strcmp(args[0],"SCR"))
                 {
+                   // ucg.clearScreen();
                     manager->spawnScreen(args[1],nbArgs-2,args+2);
                 }
             }

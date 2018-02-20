@@ -6,8 +6,8 @@
 static void drawBatteryBars(Ucglib *ucg,int battery_pos_x, int battery_pos_y, int nbBar);
 static void draw(Ucglib *ucg);
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define TYPE_SD 1
+#define TYPE_USB 2
 
 extern "C"
 {
@@ -68,15 +68,22 @@ void _drawBattery(Ucglib *ucg, int nbBar)
   int battery_bar_height = 36;
   int battery_space_bar = 3;
 
-  ucg->drawRFrame(battery_pos_x, battery_pos_y, battery_width, battery_height, 4); // main shape
+  // main shape
+  ucg->drawRFrame(battery_pos_x, battery_pos_y, battery_width, battery_height, 4); 
   ucg->drawFrame(battery_pos_x + 1, battery_pos_y + 1, battery_width - 2, battery_height - 2);
   ucg->drawFrame(battery_pos_x + 2, battery_pos_y + 2, battery_width - 4, battery_height - 4);
-  ucg->drawRBox(battery_pos_x + battery_width - 1, battery_pos_y + battery_height / 2 - battery_tit_height / 2,
-                battery_tit_width + 1, battery_tit_height, 2); // tit
 
-  for (int i = 0; i < nbBar; i++)
+  // tit
+  ucg->drawRBox(battery_pos_x + battery_width - 1, battery_pos_y + battery_height / 2 - battery_tit_height / 2,
+                battery_tit_width + 1, battery_tit_height, 2); 
+
+  // bars
+  for (int i = 0; i < 5; i++)
   {
-    ucg->drawBox(battery_pos_x + 3 + battery_space_bar + battery_space_bar * i + battery_bar_width * i, battery_pos_y + battery_space_bar + 3,
+    if (i == nbBar) { // draw black bars to optimize the screen refresh
+      ucg->setColor(0, 0, 0, 0);
+    }
+    ucg->drawBox(battery_pos_x + 3 + battery_space_bar + (battery_space_bar + battery_bar_width) * i , battery_pos_y + battery_space_bar + 3,
                  battery_bar_width, battery_bar_height);
   }
 }
@@ -110,17 +117,62 @@ void drawBattery(Ucglib *ucg, int battery_level)
   }
 }
 
+void drawSdCard(Ucglib *ucg, int x, int y, int w)
+{
+  int sd_height = w*1.3;
+  int sd_bar_width = w/8;
+  int sd_bar_height = w/4.1;
+  int sd_bar_space = w/17.6;
+  if(0 == sd_bar_space){
+    sd_bar_space = 1;
+  }
+  int sd_triangle = w/3.3;
+  int sd_round = sd_bar_space;
+
+  // main shape
+  ucg->setColor(0, 94, 122, 231);
+  ucg->drawRBox(x, y, w, sd_height, sd_round);
+  ucg->setColor(0, 0, 0, 0);
+  ucg->drawTriangle(x, y, x + sd_triangle, y, x, y + sd_triangle);
+
+  // connectors
+  ucg->setColor(0, 255, 255, 255);
+  ucg->drawBox(x + sd_triangle - sd_bar_space - sd_bar_width, y + sd_triangle / 2 + (sd_bar_space * 2), sd_bar_width, sd_bar_height);
+  for (int i = 0; i < 4; i++)
+  {
+    ucg->drawBox(x + sd_triangle + i * (sd_bar_space + sd_bar_width), y + (sd_bar_space * 2), sd_bar_width, sd_bar_height);
+  }
+}
+
+void drawAskIngest(Ucglib *ucg, int type)
+{
+  ucg->setColor(0, 255, 255, 255); // withe color for the text
+
+  switch(type){
+    case TYPE_SD:
+      {
+              
+      }
+      break;
+    case TYPE_USB:
+      {
+
+      }
+      break;
+  }
+
+}
+
 //---
 void draw(Ucglib *ucg)
 {
 
-  drawBattery(ucg, 42);
+  //drawBattery(ucg, 94);
+  
+  /*drawSdCard(ucg, 30, 100, 20);
+  drawSdCard(ucg, 60, 100, 40);
+  drawSdCard(ucg, 110, 100, 60);
+  drawSdCard(ucg, 180, 100, 80);*/
 
-  ucg->setColor(0, 255, 255, 255); // withe color for the text
-
-  ucg->drawString(10, 130, 0, "Free 13.37 GB");
-  ucg->drawString(10, 190, 0, "Mon Jan 02 15:04");
-
-
+  drawAskIngest(ucg, TYPE_SD);
 }
-

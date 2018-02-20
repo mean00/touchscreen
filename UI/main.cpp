@@ -169,10 +169,10 @@ void draw(Ucglib *ucg)
 
   //drawBattery(ucg, 94);
   
-  /*drawSdCard(ucg, 30, 100, 20);
+  drawSdCard(ucg, 30, 100, 20);
   drawSdCard(ucg, 60, 100, 40);
   drawSdCard(ucg, 110, 100, 60);
-  drawSdCard(ucg, 180, 100, 80);*/
+  drawSdCard(ucg, 180, 100, 80);
 
-  drawAskIngest(ucg, TYPE_SD);
+  //drawAskIngest(ucg, TYPE_SD);
 }

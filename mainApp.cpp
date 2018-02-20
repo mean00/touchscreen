@@ -62,15 +62,17 @@ void mySetup(void)
   Serial.begin();
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
-  ucg.setFont(ucg_font_ncenR24_hr);
+  ucg.setRotate90();
+  ucg.setFont(ucg_font_ncenB18_tf);//ucg_font_ncenR24_hr);
   ucg.clearScreen();  
   ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);
-  manager->registerScreen("dummy",0,dummySpawner);
+  manager->registerScreen("dummy",2,dummySpawner);
   
-  manager->spawnScreen("dummy",0,NULL);
+  char *args[2]={"50","1200"};
+  manager->spawnScreen("dummy",2,args);
 }
 
 void myLoop(void)

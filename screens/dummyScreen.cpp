@@ -5,15 +5,23 @@
 #include "screen.h"
 
 
-
+/**
+ */
 
 class dummyScreen : public Screen
 {
 public:
+        dummyScreen(int bat,int freespace)
+        {
+            _bat=bat;
+            _free=freespace;
+        }
         virtual void draw(Ucglib *ucg);
         virtual bool touched(int x, int y);    
+        int          _bat,_free;
 };
-
+/**
+ */
  static void drawBatteryBars(Ucglib *ucg,int battery_pos_x, int battery_pos_y, int nbBar)
     {
       int battery_bar_width = 12;
@@ -26,8 +34,15 @@ public:
                 battery_bar_width, battery_bar_height);
       }
     }
-
-
+/**
+ */
+static void centeredPrint(Ucglib *ucg,char *str,int line)
+{
+    int w=ucg->getStrWidth(str);
+    w=(ucg->getWidth()-w)/2;
+    if(w<0) w=0;
+    ucg->drawString(w, line, 0, str);
+}
 /**
  */
 void dummyScreen::draw(Ucglib *ucg)
@@ -44,7 +59,7 @@ void dummyScreen::draw(Ucglib *ucg)
   int battery_pos_x = ucg->getWidth()/2 - (battery_width + battery_tit_width)/2;
   int battery_pos_y = 30;
 
-  int battery_level = 42;
+  int battery_level = _bat;
   //ucg->drawString(10, 70, 0, "Battery 42%");
   if(battery_level > 80) {
     ucg->setColor(0, 0, 199, 20);
@@ -74,8 +89,23 @@ void dummyScreen::draw(Ucglib *ucg)
 
   ucg->setColor(0, 255, 255, 255); // withe color for the text
 
-  ucg->drawString(10, 130, 0, "Free 13.37 GB");
-  ucg->drawString(10, 190, 0, "Mon Jan 02 15:04");
+  char str[50];
+  const char *unit="GB";
+  int sz=_free;
+  if(sz>1000)
+  {
+      sz=_free/100;
+      int sz2=sz/10;
+      sz=sz-sz2*10;
+      sprintf(str,"Free : %d.%d TB",sz2,sz);
+  }else
+  {
+      sprintf(str,"Free : %d GB",sz);
+  }
+  centeredPrint(ucg,str,130);
+  centeredPrint(ucg,"Mon Jan 02 15:04",190);
+
+  
  
 }
 
@@ -90,7 +120,9 @@ bool dummyScreen::touched(int x, int y)
 
 Screen *dummySpawner(char **args)
 {
-    return new dummyScreen;
+    int bat=atoi(args[0]);
+    int fre=atoi(args[1]);
+    return new dummyScreen(bat,fre);
 }
 
 //EOF

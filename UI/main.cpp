@@ -29,19 +29,6 @@ class  UcglibSdl : public Ucglib
     {
         
     }
-
-    void drawBatteryBars(int battery_pos_x, int battery_pos_y, int nbBar)
-    {
-      int battery_bar_width = 12;
-      int battery_bar_height = 35;
-      int battery_space_bar = 3;
-
-      for (int i = 0; i++; i < nbBar)
-      {
-        drawBox(battery_pos_x + battery_space_bar * i + battery_bar_width * i, battery_pos_y + battery_space_bar + 4,
-                battery_bar_width, battery_bar_height);
-      }
-    }
 };
 
 
@@ -68,63 +55,66 @@ int main(void)
   
   return 0;
 }
-/**
- */
-  void drawBatteryBars(Ucglib *ucg,int battery_pos_x, int battery_pos_y, int nbBar)
-    {
-      int battery_bar_width = 12;
-      int battery_bar_height = 35;
-      int battery_space_bar = 3;
 
-      for (int i = 0; i++; i < nbBar)
-      {
-        ucg->drawBox(battery_pos_x + battery_space_bar * i + battery_bar_width * i, battery_pos_y + battery_space_bar + 4,
-                battery_bar_width, battery_bar_height);
-      }
-    }
+void _drawBattery(Ucglib *ucg, int nbBar)
+{
+  int battery_width = 84;
+  int battery_height = 48;
+  int battery_tit_width = 8;
+  int battery_tit_height = 19;
+  int battery_pos_x = ucg->getWidth() / 2 - (battery_width + battery_tit_width) / 2;
+  int battery_pos_y = 30;
+  int battery_bar_width = 12;
+  int battery_bar_height = 36;
+  int battery_space_bar = 3;
+
+  ucg->drawRFrame(battery_pos_x, battery_pos_y, battery_width, battery_height, 4); // main shape
+  ucg->drawFrame(battery_pos_x + 1, battery_pos_y + 1, battery_width - 2, battery_height - 2);
+  ucg->drawFrame(battery_pos_x + 2, battery_pos_y + 2, battery_width - 4, battery_height - 4);
+  ucg->drawRBox(battery_pos_x + battery_width - 1, battery_pos_y + battery_height / 2 - battery_tit_height / 2,
+                battery_tit_width + 1, battery_tit_height, 2); // tit
+
+  for (int i = 0; i < nbBar; i++)
+  {
+    ucg->drawBox(battery_pos_x + 3 + battery_space_bar + battery_space_bar * i + battery_bar_width * i, battery_pos_y + battery_space_bar + 3,
+                 battery_bar_width, battery_bar_height);
+  }
+}
+
+void drawBattery(Ucglib *ucg, int battery_level)
+{
+  if (battery_level > 92)
+  {
+    ucg->setColor(0, 0, 199, 20);
+    _drawBattery(ucg, 5);
+  }
+  else if (battery_level > 72)
+  {
+    ucg->setColor(0, 139, 196, 65);
+    _drawBattery(ucg, 4);
+  }
+  else if (battery_level > 52)
+  {
+    ucg->setColor(0, 248, 172, 65);
+    _drawBattery(ucg, 3);
+  }
+  else if (battery_level > 32)
+  {
+    ucg->setColor(0, 237, 91, 39);
+    _drawBattery(ucg, 2);
+  }
+  else
+  {
+    ucg->setColor(0, 233, 29, 33);
+    _drawBattery(ucg, 1);
+  }
+}
 
 //---
 void draw(Ucglib *ucg)
 {
-  
- 
-  /* 
-   * Battery
-   */
-  int battery_width = 88;
-  int battery_height = 48;
-  int battery_tit_width = 8;
-  int battery_tit_height = 19;
-  int battery_pos_x = ucg->getWidth()/2 - (battery_width + battery_tit_width)/2;
-  int battery_pos_y = 30;
 
-  int battery_level = 42;
-  //ucg->drawString(10, 70, 0, "Battery 42%");
-  if(battery_level > 80) {
-    ucg->setColor(0, 0, 199, 20);
-    drawBatteryBars(ucg,battery_pos_x, battery_pos_y, 5);
-  }
-  else if (battery_level > 60) {
-    ucg->setColor(0, 139, 196, 65);
-    drawBatteryBars(ucg,battery_pos_x, battery_pos_y, 4);
-  }
-  else if (battery_level > 40 ){
-    ucg->setColor(0, 248, 172, 65);
-    drawBatteryBars(ucg,battery_pos_x, battery_pos_y, 3);
-  }
-  else if (battery_level > 20) {
-    ucg->setColor(0, 237, 91, 39);
-    drawBatteryBars(ucg,battery_pos_x, battery_pos_y, 2);
-  }
-  else {
-    ucg->setColor(0, 233, 29, 33);
-    drawBatteryBars(ucg,battery_pos_x, battery_pos_y, 1);
-  }
-  ucg->drawRFrame(battery_pos_x, battery_pos_y, battery_width, battery_height, 4);     // main shape
-  ucg->drawFrame(battery_pos_x+1, battery_pos_y+1, battery_width-2, battery_height-2); 
-  ucg->drawFrame(battery_pos_x+2, battery_pos_y+2, battery_width-4, battery_height-4); 
-  ucg->drawRBox(battery_pos_x + battery_width - 1, battery_pos_y + battery_height / 2 - battery_tit_height / 2,
-    battery_tit_width + 1, battery_tit_height, 2); // tit
+  drawBattery(ucg, 42);
 
   ucg->setColor(0, 255, 255, 255); // withe color for the text
 

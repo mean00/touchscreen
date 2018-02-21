@@ -25,6 +25,7 @@ public:
     void drawBox(int x, int y, int w, int h);
     void drawString(int x, int y, int dir, const char *str) ;
     void drawCircle(int x0, int y0, int rad, int option) ;
+    void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2) ;
 protected:    
     Adafruit_ILI9341_STM *_tft;
     

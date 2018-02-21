@@ -50,7 +50,7 @@
 ScreenManager *manager=NULL;
 extern Screen *dummySpawner(const char **args);
 extern Screen *bootSpawner(const char **args);
-
+extern Screen *querySpawner(const char **args);
 
 #define TS_INTERRUPT_PIN PB6
 #define TS_CS_PIN        PA3
@@ -83,12 +83,14 @@ void mySetup(void)
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);
-  manager->registerScreen("dummy",2,dummySpawner);
+  manager->registerScreen("idle",2,dummySpawner);
   manager->registerScreen("boot",0,bootSpawner);
+  manager->registerScreen("query",0,querySpawner);
   
 #ifndef BOOT_SCREEN  
   char *args[2]={"50","1200"};
-  manager->spawnScreen("dummy",2,(const char **)args);
+  //manager->spawnScreen("idle",2,(const char **)args);
+  manager->spawnScreen("query",0,(const char **)args);
 #else
    manager->spawnScreen("boot",0,NULL);
 #endif

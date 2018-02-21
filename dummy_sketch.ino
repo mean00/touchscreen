@@ -37,8 +37,12 @@
 
 #include <SPI.h>
 #include <XPT2046_Touchscreen.h>
-//#include "Adafruit_ILI9341_STM.h"
-#include "Ucglib.h"
+#if 1 //def FAST_LCD
+    #include "Adafruit_GFX_AS.h"
+    #include "Adafruit_ILI9341_STM.h"
+#else
+    #include "Ucglib.h"
+#endif
 
 
 extern void mySetup(void);

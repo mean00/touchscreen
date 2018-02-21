@@ -34,17 +34,17 @@
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
 
 */
-
+#include <vector>
 #include <SPI.h>
 
-#include "myLcd.h"
+
 #include <XPT2046_Touchscreen.h>
 #include "ili_touch.h"
 
 #include "screenManager.h"
 #include "serialIo.h"
 #include "touchySerializer.h"
-
+#include "myLcd.h"
 #define BOOT_SCREEN
 
 ScreenManager *manager=NULL;
@@ -55,7 +55,16 @@ extern Screen *bootSpawner(const char **args);
 #define TS_INTERRUPT_PIN PB6
 #define TS_CS_PIN        PA3
 
-Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ PA2, /*cs=*/ PA0, /*reset=*/ PA1);
+
+#ifdef FAST_LCD
+   Adafruit_ILI9341_STM tft = Adafruit_ILI9341_STM(PA2, PA0,PA1);
+   Ucglib  ucg(&tft);
+
+#else
+    Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ PA2, /*cs=*/ PA0, /*reset=*/ PA1);
+#endif
+
+
 iliTouch  *ts=NULL;
 void mySetup(void)
 {

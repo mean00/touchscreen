@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include "myLcd.h"
 #include "screenManager.h"
 

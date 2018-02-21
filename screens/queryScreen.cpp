@@ -23,7 +23,7 @@ public:
         {
         }
         virtual void draw(Ucglib *ucg);
-        virtual bool touched(int x, int y);    
+        virtual bool touched(Ucglib *ucg,int x, int y);    
 };
 /**
  */
@@ -66,7 +66,7 @@ void drawButton(Ucglib *ucg, int x, int y, int type)
   {
     ucg->setColor(0, 135, 184, 108);
     // TODO Center text!!!
-    ucg->drawString(x + 22, str_y, 0, "YES");
+    ucg->drawString(x + 22+10, str_y, 0, "YES");
   }
   break;
 
@@ -75,7 +75,7 @@ void drawButton(Ucglib *ucg, int x, int y, int type)
   {
     ucg->setColor(0, 204, 95, 85);
     // TODO Center text!!!
-    ucg->drawString(x + 22, str_y, 0, "NO");
+    ucg->drawString(x + 22+10, str_y, 0, "NO");
   }
   break;
 
@@ -112,9 +112,9 @@ void drawAskIngest(Ucglib *ucg, int type)
   ucg->setColor(0, 255, 255, 255);
 
   // TODO Center text!!!
-  ucg->drawString(30, 132, 0, "Do you want to copy?");
+  ucg->drawString(60, 132, 0, "Copy SD card ?");
   drawButton(ucg, 30 , ucg->getHeight() - 50, 2);
-  drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 50, 1);
+  drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 50, 1); 
 }
 
 /**
@@ -137,11 +137,11 @@ bool buttonMatch(int x, int bx)
 
 /**
  */
-bool queryScreen::touched(int x, int y)
+bool queryScreen::touched(Ucglib *ucg,int x, int y)
 {
    // LOGex(x);
    // LOGex(y);
-    if((y>240 - 50) && (y<240 - -50 +button_height))
+    if((y>ucg->getHeight() - 50) && (y<ucg->getHeight() - 50 +button_height))
     {
         if(buttonMatch(x,30))
         {

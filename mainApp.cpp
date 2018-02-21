@@ -142,10 +142,13 @@ void myLoop(void)
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))
     {
-        LOGex(input);
-        LOG("Got a string, exiting bootlopo");
-        bootloop=false;
-        ProcessInputString(input);
+        if(strlen(input)>2)
+        {
+            LOGex(input);
+            LOG("Got a string, exiting bootlopo");
+            bootloop=false;
+            ProcessInputString(input);
+        }
     }
     return;
   }

@@ -16,7 +16,7 @@ public:
         {
         }
         virtual void draw(Ucglib *ucg);
-        virtual bool touched(int x, int y);    
+        virtual bool touched(Ucglib *ucg,int x, int y);    
 
 };
 void drawSmallCircle(Ucglib *ucg,bool isTrue, int x, int y)
@@ -62,7 +62,7 @@ static int index=0;
 
 /**
  */
-bool bootScreen::touched(int x, int y)
+bool bootScreen::touched(Ucglib *ucg,int x, int y)
 {
     return false;
 }

@@ -18,7 +18,7 @@ public:
             _free=freespace;
         }
         virtual void draw(Ucglib *ucg);
-        virtual bool touched(int x, int y);    
+        virtual bool touched(Ucglib *ucg,int x, int y);    
         int          _bat,_free;
 };
 /**
@@ -145,7 +145,7 @@ void dummyScreen::draw(Ucglib *ucg)
 
 /**
  */
-bool dummyScreen::touched(int x, int y)
+bool dummyScreen::touched(Ucglib *ucg,int x, int y)
 {
     return false;
 }

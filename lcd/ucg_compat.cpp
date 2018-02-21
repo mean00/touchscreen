@@ -69,7 +69,7 @@ void Ucglib::drawBox(int x, int y, int w, int h)
 void Ucglib::drawString(int x, int y, int dir, const char *str) 
 {
     _tft->setTextColor(currentColor);
-    _tft->setCursor(x,y);
+    _tft->setCursor(x,y-12);
     _tft->println((char *)str);
 }
 void Ucglib::drawCircle(int x0, int y0, int rad, int option) 

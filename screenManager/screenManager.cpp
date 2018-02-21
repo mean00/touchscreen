@@ -69,10 +69,11 @@ bool ScreenManager::clicked(int x,int y)
 {
     if(!currentScreen)
     {
-        Serial.println("COM;clicked :No current screen ");
-         return false;
+        //Serial.println("COM;clicked :No current screen ");
+        return false;
     }
-    if(currentScreen->touched(x,y))
+    //ucg->drawCircle(x,y,3,0xffff);
+    if(currentScreen->touched(ucg,x,y))
     {
         delete currentScreen;
         currentScreen=NULL;

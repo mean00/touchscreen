@@ -150,12 +150,15 @@ void myLoop(void)
     return;
   }
 #endif
-  
-    if(ts->press(x,y))
+#if 1
+    bool touched=ts->press(x,y);
+    SPI.setClockDivider (SPI_CLOCK_DIV2);
+    if(touched)
     {        
         //LOG("Screen Pressed");
         manager->clicked(x,y);
     }
+#endif
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))
     {

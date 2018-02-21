@@ -36,7 +36,8 @@
 */
 
 #include <SPI.h>
-#include "Ucglib.h"
+
+#include "myLcd.h"
 #include <XPT2046_Touchscreen.h>
 #include "ili_touch.h"
 

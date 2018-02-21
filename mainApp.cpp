@@ -34,27 +34,39 @@
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
 
 */
-
+#include <vector>
 #include <SPI.h>
-#include "Ucglib.h"
+
+
 #include <XPT2046_Touchscreen.h>
 #include "ili_touch.h"
 
 #include "screenManager.h"
 #include "serialIo.h"
 #include "touchySerializer.h"
-
+#include "myLcd.h"
+#include "touchyDebug.h"
 #define BOOT_SCREEN
+
 
 ScreenManager *manager=NULL;
 extern Screen *dummySpawner(const char **args);
 extern Screen *bootSpawner(const char **args);
-
+extern Screen *querySpawner(const char **args);
 
 #define TS_INTERRUPT_PIN PB6
 #define TS_CS_PIN        PA3
 
-Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ PA2, /*cs=*/ PA0, /*reset=*/ PA1);
+
+#ifdef FAST_LCD
+   Adafruit_ILI9341_STM tft = Adafruit_ILI9341_STM(PA0, PA2,PA1);
+   Ucglib  ucg(&tft);
+
+#else
+    Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ PA2, /*cs=*/ PA0, /*reset=*/ PA1);
+#endif
+
+
 iliTouch  *ts=NULL;
 void mySetup(void)
 {
@@ -66,57 +78,88 @@ void mySetup(void)
   Serial.begin();
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
-  ucg.setRotate90();
-  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
   ucg.clearScreen();  
-  ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
+  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
+  ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/0,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);
-  manager->registerScreen("dummy",2,dummySpawner);
+  manager->registerScreen("idle",2,dummySpawner);
   manager->registerScreen("boot",0,bootSpawner);
+  manager->registerScreen("query",0,querySpawner);
   
 #ifndef BOOT_SCREEN  
   char *args[2]={"50","1200"};
-  manager->spawnScreen("dummy",2,(const char **)args);
+  manager->spawnScreen("idle",2,(const char **)args);
+  //manager->spawnScreen("query",0,(const char **)args);
 #else
    manager->spawnScreen("boot",0,NULL);
 #endif
 }
+/**
+ */
+static void ProcessInputString(char *input)  
+{
+  static const char *args[10];
+  LOG("Got string");
+  LOGex(input);
 
+  int nbArgs;
+  if(DeSerializer::deserialize((char *)input,nbArgs,(const char **)args))  // char *input,  int &args, const char **arg);    
+  {
+      if(nbArgs>=2)
+      {
+          if(!strcmp(args[0],"SCR"))
+          {                   
+              LOG("SPWANING");
+              manager->spawnScreen(args[1],nbArgs-2,args+2);
+          }else
+              LOG("Wrong screen name");
+      }else
+      {
+          LOG("Not enough args");
+          Serial.println(nbArgs);
+      }
+  }else
+        LOG("Cannot deserialize");
+}
+  
+/**
+ */
 void myLoop(void)
 {
   int x,y;
   static int count=0;
   static char *input;
-  static const char *args[10];
+  
   
 #if defined(BOOT_SCREEN)
+  static bool bootloop=true;
+  if(bootloop)
+  {
+    manager->redraw();
+    delay(500);
+    arduinoSerial::run();
+    if(arduinoSerial::hasString(&input))
+    {
+        LOGex(input);
+        LOG("Got a string, exiting bootlopo");
+        bootloop=false;
+        ProcessInputString(input);
+    }
+    return;
+  }
+#endif
   
-  manager->redraw();
-  delay(500);
-#else
-  
-    if(!ts->press(x,y))
+    if(ts->press(x,y))
     {        
+        //LOG("Screen Pressed");
         manager->clicked(x,y);
     }
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))
     {
-        int nbArgs;
-        if(DeSerializer::deserialize((char *)input,nbArgs,(const char **)args))  // char *input,  int &args, const char **arg);    
-        {
-            if(nbArgs>2)
-            {
-                if(!strcmp(args[0],"SCR"))
-                {
-                   // ucg.clearScreen();
-                    manager->spawnScreen(args[1],nbArgs-2,args+2);
-                }
-            }
-        }
+        ProcessInputString(input);
     }
-#endif    
-  
+
 }

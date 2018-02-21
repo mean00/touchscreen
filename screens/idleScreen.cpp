@@ -1,9 +1,10 @@
 
 /**
  */
-#include "Ucglib.h"
-#include "screen.h"
 
+#include "myLcd.h"
+#include "screen.h"
+#include "touchyDebug.h"
 
 /**
  */
@@ -111,7 +112,7 @@ static void centeredPrint(Ucglib *ucg,char *str,int line)
 void dummyScreen::draw(Ucglib *ucg)
 {
 
- 
+ LOG("DRAWING idle");
   /* 
    * Battery
    */

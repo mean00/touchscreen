@@ -2,6 +2,7 @@
 /**
  */
 #pragma once
+#include "myLcd.h"
 class Ucglib;
 class ScreenManager;
 /**

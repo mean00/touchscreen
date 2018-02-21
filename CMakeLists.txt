@@ -29,11 +29,20 @@ PRINT_SETTINGS(${ARDUINO_DEFAULT_BOARD})
 SET(CUSTOM_LIB_DIR /home/fx/Arduino/libraries)
 
 link_directories( ${CUSTOM_LIB_DIR})
-
+SET(FAST_LCD 1)
+IF(FAST_LCD)
+    include_directories(${CUSTOM_LIB_DIR}/Adafruit_ILI9341_STM/)
+    SET(LCD_LIB Adafruit_ILI9341_STM)
+    ADD_DEFINITIONS(-DFAST_LCD)
+    include_directories(lcd)
+    SET(EXTRA_SRC lcd/ucg_compat.cpp)
+ELSE(FAST_LCD)
 # u8glib is complicated and needs special care
-include_directories(${CUSTOM_LIB_DIR}/Ucglib/cppsrc)
-include_directories(${CUSTOM_LIB_DIR}/Ucglib/csrc)
-set(Ucglib_RECURSE True)
+    include_directories(${CUSTOM_LIB_DIR}/Ucglib/cppsrc)
+    include_directories(${CUSTOM_LIB_DIR}/Ucglib/csrc)
+    set(Ucglib_RECURSE True)
+    SET(LCD_LIB Ucglib)
+ENDIF(FAST_LCD)
 #
 # Be careful with the includes in the ino files
 # #include <foo.h> // this is a comment
@@ -49,8 +58,10 @@ include_directories(screenManager)
 #ADD_DEFINITIONS("-ffunction-sections -fdata-sections ")
 generate_arduino_firmware(touchscreen_demo 
                 SKETCH dummy_sketch.ino
-                SRCS mainApp.cpp touchScreen/ili_touch.cpp serializer/touchySerializer.cpp serial_io/serialIo.cpp  screenManager/screenManager.cpp screens/dummyScreen.cpp screens/bootScreen.cpp
-                LIBS ${libPrefix}Ucglib 
+                SRCS mainApp.cpp touchScreen/ili_touch.cpp serializer/touchySerializer.cpp serial_io/serialIo.cpp  screenManager/screenManager.cpp 
+			screens/idleScreen.cpp screens/bootScreen.cpp screens/queryScreen.cpp
+			${EXTRA_SRC}
+                LIBS ${libPrefix}${LCD_LIB} 
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )

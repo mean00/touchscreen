@@ -1,6 +1,7 @@
-#include "Ucglib.h"
+#include "Arduino.h"
+#include "myLcd.h"
 #include "screenManager.h"
-
+#include "touchyDebug.h"
 
 ScreenManager:: ScreenManager(Ucglib *theucg)
 {
@@ -36,24 +37,30 @@ bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
         }
     if(found==-1)
     {
-        Serial.println("COM;this screen is unknown");
+        LOG("this screen is unknown");
         return false;
     }
     if(entries[found]->nbArg!=nb)
     {
-        Serial.println("COM;Wrong number of arg");
+        LOG("Wrong number of arg");
         return false;
     }
+    LOG("found screen");
     if(currentScreen) delete currentScreen;
     currentScreen=NULL;
     currentScreen=entries[found]->spawner(arg);
     if(!currentScreen)
     {
-        Serial.println("COM;spawning failed");
+        LOG("spawning failed");
         return false;
     }
     currentScreen->setParent(this);
+    // Reset screen
+    
+    
+    ucg->clearScreen();
     currentScreen->draw(ucg);
+    LOG("spawning ok");
     return true;
 }
 

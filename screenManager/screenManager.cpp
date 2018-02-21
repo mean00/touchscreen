@@ -55,6 +55,9 @@ bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
         return false;
     }
     currentScreen->setParent(this);
+    // Reset screen
+    
+    
     ucg->clearScreen();
     currentScreen->draw(ucg);
     LOG("spawning ok");

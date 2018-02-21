@@ -46,7 +46,7 @@
 #include "touchySerializer.h"
 #include "myLcd.h"
 #include "touchyDebug.h"
-//#define BOOT_SCREEN
+#define BOOT_SCREEN
 
 
 ScreenManager *manager=NULL;
@@ -78,10 +78,9 @@ void mySetup(void)
   Serial.begin();
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
-  ucg.setRotate90();
-  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
   ucg.clearScreen();  
-  ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/1,TS_CS_PIN,TS_INTERRUPT_PIN);
+  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
+  ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/0,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);
@@ -97,48 +96,70 @@ void mySetup(void)
    manager->spawnScreen("boot",0,NULL);
 #endif
 }
+/**
+ */
+static void ProcessInputString(char *input)  
+{
+  static const char *args[10];
+  LOG("Got string");
+  LOGex(input);
 
+  int nbArgs;
+  if(DeSerializer::deserialize((char *)input,nbArgs,(const char **)args))  // char *input,  int &args, const char **arg);    
+  {
+      if(nbArgs>=2)
+      {
+          if(!strcmp(args[0],"SCR"))
+          {                   
+              LOG("SPWANING");
+              manager->spawnScreen(args[1],nbArgs-2,args+2);
+          }else
+              LOG("Wrong screen name");
+      }else
+      {
+          LOG("Not enough args");
+          Serial.println(nbArgs);
+      }
+  }else
+        LOG("Cannot deserialize");
+}
+  
+/**
+ */
 void myLoop(void)
 {
   int x,y;
   static int count=0;
   static char *input;
-  static const char *args[10];
+  
   
 #if defined(BOOT_SCREEN)
+  static bool bootloop=true;
+  if(bootloop)
+  {
+    manager->redraw();
+    delay(500);
+    arduinoSerial::run();
+    if(arduinoSerial::hasString(&input))
+    {
+        LOGex(input);
+        LOG("Got a string, exiting bootlopo");
+        bootloop=false;
+        ProcessInputString(input);
+    }
+    return;
+  }
+#endif
   
-  manager->redraw();
-  delay(500);
-#else
-  
-    if(!ts->press(x,y))
+    if(ts->press(x,y))
     {        
+        //LOG("Screen Pressed");
         manager->clicked(x,y);
     }
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))
     {
-        LOG("Got string");
-        
-        int nbArgs;
-        if(DeSerializer::deserialize((char *)input,nbArgs,(const char **)args))  // char *input,  int &args, const char **arg);    
-        {
-            if(nbArgs>=2)
-            {
-                if(!strcmp(args[0],"SCR"))
-                {                   
-                    LOG("SPWANING");
-                    manager->spawnScreen(args[1],nbArgs-2,args+2);
-                }else
-                    LOG("Wrong screen name");
-            }else
-            {
-                LOG("Not enough args");
-                Serial.println(nbArgs);
-            }
-        }else
-                    LOG("Cannot deserialize");
+        ProcessInputString(input);
     }
-#endif    
-  
+
 }

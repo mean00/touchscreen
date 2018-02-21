@@ -11,6 +11,10 @@
 /**
  */
 
+#define button_width  100
+#define button_height  32
+
+
 class queryScreen : public Screen
 {
 public:
@@ -48,11 +52,10 @@ void drawSdCard(Ucglib *ucg, int x, int y, int w)
     ucg->drawBox(x + sd_triangle + i * (sd_bar_space + sd_bar_width), y + (sd_bar_space * 2), sd_bar_width, sd_bar_height);
   }
 }
-
+/**
+ */
 void drawButton(Ucglib *ucg, int x, int y, int type)
 {
-  int button_width = 100;
-  int button_height = 32;
   int str_y = y + button_height / 2 + 8;
 
   switch (type)
@@ -85,7 +88,8 @@ void drawButton(Ucglib *ucg, int x, int y, int type)
   // button shape
   ucg->drawRFrame(x, y, button_width, button_height, 2);
 }
-
+/**
+ */
 void drawAskIngest(Ucglib *ucg, int type)
 { 
   switch(type){
@@ -108,7 +112,6 @@ void drawAskIngest(Ucglib *ucg, int type)
 
   // TODO Center text!!!
   ucg->drawString(30, 132, 0, "Do you want to copy?");
-
   drawButton(ucg, 30 , ucg->getHeight() - 50, 2);
   drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 50, 1);
 }
@@ -117,10 +120,17 @@ void drawAskIngest(Ucglib *ucg, int type)
  */
 void queryScreen::draw(Ucglib *ucg)
 {
-LOG("DRAWING query");
+    LOG("DRAWING query");
     drawAskIngest(ucg,TYPE_SD); 
    
  
+}
+
+bool buttonMatch(int x, int bx)
+{
+    if(x>=bx && x<=(bx+button_width))
+        return true;
+    return false;
 }
 
 
@@ -128,6 +138,21 @@ LOG("DRAWING query");
  */
 bool queryScreen::touched(int x, int y)
 {
+   // LOGex(x);
+   // LOGex(y);
+    if((y>240 - 50) && (y<240 - -50 +button_height))
+    {
+        if(buttonMatch(x,30))
+        {
+            LOG("LEFT CLICK");
+            return true;
+        }
+        if(buttonMatch(x,240 - 50))
+        {
+            LOG("LEFT RIGHT");
+            return true;
+        }
+    }     
     return false;
 }
 

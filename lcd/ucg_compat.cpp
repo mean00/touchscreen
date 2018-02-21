@@ -10,7 +10,9 @@ Ucglib::Ucglib(Adafruit_ILI9341_STM *tft)
 }
 void Ucglib::clearScreen()
 {
-    _tft->fillScreen(0);
+    _tft->setRotation(0);
+    _tft->fillRect(0,0,239,319,0);
+    _tft->setRotation(1);
 }
 void Ucglib::begin(int fontMode)
 {
@@ -21,6 +23,7 @@ void Ucglib::begin(int fontMode)
 void Ucglib::setRotate90()
 {
     _tft->setRotation(1);
+
 }
 void Ucglib::setFont(void *fnt)
 {

@@ -82,3 +82,16 @@ bool ScreenManager::clicked(int x,int y)
 }
 
 
+bool ScreenManager::sendEvent(const char *event)
+{
+    if(!currentScreen)
+    {
+        LOG("NO SCREEN TO SEND EVENT");
+        return false;
+    }
+    char bfer[100];
+    strcpy(bfer,"EVENT;");
+    strcat(bfer,"query;"); // FIXME
+    strcat(bfer,event);
+    Serial.println(bfer);
+}

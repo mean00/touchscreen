@@ -5,6 +5,7 @@
 #include "myLcd.h"
 #include "screen.h"
 #include "touchyDebug.h"
+#include "screenManager.h"
 #define TYPE_SD 1
 #define TYPE_USB 2
 
@@ -145,11 +146,13 @@ bool queryScreen::touched(int x, int y)
         if(buttonMatch(x,30))
         {
             LOG("LEFT CLICK");
+            parent->sendEvent("0");
             return true;
         }
         if(buttonMatch(x,240 - 50))
         {
             LOG("LEFT RIGHT");
+            parent->sendEvent("1");
             return true;
         }
     }     

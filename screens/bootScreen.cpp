@@ -31,10 +31,9 @@ void drawSmallCircle(Ucglib *ucg,bool isTrue, int x, int y)
     }else
     {
         ucg->setColor(0, 0, 0, 0); // withe color for the text
-         ucg->drawCircle(x,y,20,UCG_DRAW_ALL);
+        ucg->drawCircle(x,y,20,UCG_DRAW_ALL);
         ucg->setColor(0, 0, 255, 0); // withe color for the text
-         ucg->drawCircle(x,y,10,UCG_DRAW_ALL);
-
+        ucg->drawCircle(x,y,10,UCG_DRAW_ALL);
     }
 }
 

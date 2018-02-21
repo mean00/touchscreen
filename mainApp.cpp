@@ -45,7 +45,7 @@
 #include "serialIo.h"
 #include "touchySerializer.h"
 #include "myLcd.h"
-#define BOOT_SCREEN
+//#define BOOT_SCREEN
 
 ScreenManager *manager=NULL;
 extern Screen *dummySpawner(const char **args);
@@ -57,7 +57,7 @@ extern Screen *bootSpawner(const char **args);
 
 
 #ifdef FAST_LCD
-   Adafruit_ILI9341_STM tft = Adafruit_ILI9341_STM(PA2, PA0,PA1);
+   Adafruit_ILI9341_STM tft = Adafruit_ILI9341_STM(PA0, PA2,PA1);
    Ucglib  ucg(&tft);
 
 #else

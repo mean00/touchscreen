@@ -4,7 +4,7 @@
 #include "myLcd.h"
 
 #include "screen.h"
-
+#include "touchyDebug.h"
 
 /**
  */
@@ -48,6 +48,8 @@ int rad1=10;
 int rad2=20;
 int r;
 static int index=0;
+
+    LOG("DRAWING BOOT");
     drawSmallCircle(ucg,index==0,center-step,middle);
     drawSmallCircle(ucg,index==1,center,middle);
     drawSmallCircle(ucg,index==2,center+step,middle);

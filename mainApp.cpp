@@ -45,7 +45,9 @@
 #include "serialIo.h"
 #include "touchySerializer.h"
 #include "myLcd.h"
+#include "touchyDebug.h"
 //#define BOOT_SCREEN
+
 
 ScreenManager *manager=NULL;
 extern Screen *dummySpawner(const char **args);
@@ -89,8 +91,8 @@ void mySetup(void)
   
 #ifndef BOOT_SCREEN  
   char *args[2]={"50","1200"};
-  //manager->spawnScreen("idle",2,(const char **)args);
-  manager->spawnScreen("query",0,(const char **)args);
+  manager->spawnScreen("idle",2,(const char **)args);
+  //manager->spawnScreen("query",0,(const char **)args);
 #else
    manager->spawnScreen("boot",0,NULL);
 #endif
@@ -116,18 +118,26 @@ void myLoop(void)
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))
     {
+        LOG("Got string");
+        
         int nbArgs;
         if(DeSerializer::deserialize((char *)input,nbArgs,(const char **)args))  // char *input,  int &args, const char **arg);    
         {
-            if(nbArgs>2)
+            if(nbArgs>=2)
             {
                 if(!strcmp(args[0],"SCR"))
-                {
-                   // ucg.clearScreen();
+                {                   
+                    LOG("SPWANING");
                     manager->spawnScreen(args[1],nbArgs-2,args+2);
-                }
+                }else
+                    LOG("Wrong screen name");
+            }else
+            {
+                LOG("Not enough args");
+                Serial.println(nbArgs);
             }
-        }
+        }else
+                    LOG("Cannot deserialize");
     }
 #endif    
   

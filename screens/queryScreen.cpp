@@ -4,7 +4,7 @@
 
 #include "myLcd.h"
 #include "screen.h"
-
+#include "touchyDebug.h"
 #define TYPE_SD 1
 #define TYPE_USB 2
 
@@ -117,7 +117,7 @@ void drawAskIngest(Ucglib *ucg, int type)
  */
 void queryScreen::draw(Ucglib *ucg)
 {
-
+LOG("DRAWING query");
     drawAskIngest(ucg,TYPE_SD); 
    
  

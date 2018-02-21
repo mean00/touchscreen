@@ -36,19 +36,19 @@ bool    iliTouch::press(int &xo,  int &yo)
   // Retrieve a point  
   TS_Point p = xpt->getPoint();
   // Rescale
-  if(!_rotation)
-  {
-    xo = map(p.x, TOP_LEFT_X, BOTTOM_RIGHT_X, 0, _height);
-    yo = map(p.y, TOP_LEFT_Y, BOTTOM_RIGHT_Y, 0, _width);
-  }else
-  {
-    int x=BOTTOM_RIGHT_Y-p.y;
-    if(x<0) x=0;
-    int y=p.x;
-
-     xo = map(x, TOP_LEFT_Y, BOTTOM_RIGHT_Y, 0, _width);
-     yo = map(y, TOP_LEFT_X, BOTTOM_RIGHT_X, 0, _height);
-  }
+#if 0
+      Serial.println("RAW");
+      Serial.println(p.x);
+      Serial.println(p.y);
+#endif
+      xo = map(p.x, TOP_LEFT_X, BOTTOM_RIGHT_X, 0, _height );
+      yo = map(p.y, TOP_LEFT_Y, BOTTOM_RIGHT_Y, 0, _width);
+#if 0
+      Serial.println("CAL");
+      Serial.println(xo);
+      Serial.println(yo);
+#endif
+  
   return true;
 
 }

@@ -112,9 +112,9 @@ void drawAskIngest(Ucglib *ucg, int type)
   ucg->setColor(0, 255, 255, 255);
 
   // TODO Center text!!!
-  ucg->drawString(60, 132, 0, "Copy SD card ?");
-  drawButton(ucg, 30 , ucg->getHeight() - 50, 2);
-  drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 50, 1); 
+  ucg->drawString(60, 120, 0, "Copy SD card ?");
+  drawButton(ucg, 30 , ucg->getHeight() - 60, 2);
+  drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 60, 1); 
 }
 
 /**
@@ -141,7 +141,7 @@ bool queryScreen::touched(Ucglib *ucg,int x, int y)
 {
    // LOGex(x);
    // LOGex(y);
-    if((y>ucg->getHeight() - 50) && (y<ucg->getHeight() - 50 +button_height))
+    if((y>ucg->getHeight() - 60))
     {
         if(buttonMatch(x,30))
         {
@@ -149,9 +149,9 @@ bool queryScreen::touched(Ucglib *ucg,int x, int y)
             parent->sendEvent("0");
             return true;
         }
-        if(buttonMatch(x,240 - 50))
+        if(buttonMatch(x,ucg->getWidth()-130))
         {
-            LOG("LEFT RIGHT");
+            LOG("RIGHT RIGHT");
             parent->sendEvent("1");
             return true;
         }

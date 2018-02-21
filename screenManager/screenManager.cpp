@@ -72,12 +72,18 @@ bool ScreenManager::clicked(int x,int y)
         //Serial.println("COM;clicked :No current screen ");
         return false;
     }
-    //ucg->drawCircle(x,y,3,0xffff);
+#if DEBUG   
+    ucg->setColor(0,255,255,255);
+    ucg->drawBox(x,y,5,5);
+#endif
+    
     if(currentScreen->touched(ucg,x,y))
     {
+#if 1        
         delete currentScreen;
         currentScreen=NULL;
         ucg->clearScreen();        
+#endif
     }
     return false;
 }

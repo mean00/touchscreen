@@ -68,6 +68,8 @@ extern Screen *querySpawner(const char **args);
 
 
 iliTouch  *ts=NULL;
+/**
+ */
 void mySetup(void)
 {
   SPI.begin();
@@ -78,9 +80,10 @@ void mySetup(void)
   Serial.begin();
   Serial.println("Start");
   ucg.begin(UCG_FONT_MODE_SOLID);
+  
   ucg.clearScreen();  
   ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
-  ts=new iliTouch(ucg.getWidth(),ucg.getHeight(),/*ucg.getRotation()*/0,TS_CS_PIN,TS_INTERRUPT_PIN);
+  ts=new iliTouch(240,320,0,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);

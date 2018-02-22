@@ -49,7 +49,7 @@ void ingestingScreen::draw(Ucglib *ucg)
     char str[50];
     sprintf(str," %d %% done",_percent);
     ucg->setColor(0, 255, 255, 255);
-    ucg->drawString(10,third*2,0,str);
+    ucg->drawString(10,centery*2,0,str);
    
  
 }

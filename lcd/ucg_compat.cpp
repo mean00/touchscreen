@@ -86,4 +86,10 @@ void Ucglib::drawPixel(int x0, int y0)
 {
     _tft->drawPixel(x0,y0,currentColor);
 }
+
+void Ucglib::drawLine(int x0, int y0, int x1, int y1) 
+{
+    _tft->drawLine(x0,y0,x1,y1,currentColor);
+}
+
 //

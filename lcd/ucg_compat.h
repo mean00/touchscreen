@@ -26,6 +26,7 @@ public:
     void drawString(int x, int y, int dir, const char *str) ;
     void drawCircle(int x0, int y0, int rad, int option) ;
     void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2) ;
+    void drawLine(int x0, int y0,int x1,int y1) ;
     //
     void drawPixel(int x0, int y0) ;
     Adafruit_ILI9341_STM *getTft() {return _tft;}

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Ucglib.h"
+#include "math.h"
 
 static void drawBatteryBars(Ucglib *ucg,int battery_pos_x, int battery_pos_y, int nbBar);
 static void draw(Ucglib *ucg);
@@ -210,27 +211,93 @@ void drawAskIngest(Ucglib *ucg, int type)
 
 
 
+void drawPercent(Ucglib *ucg, int percent)
+{
+       
+
+#define ray0 45
+#define ray  50
+#define ray2 80
+#define ray3 85
+    int centerx=160;
+    int centery=120;
+    ucg->setColor(0, 255, 255, 255);
+
+    int angle=percent;
+    angle=(angle*36)/10;
+
+    ucg->drawCircle(centerx,centery,ray0,UCG_DRAW_ALL);
+    ucg->drawCircle(centerx,centery,ray3,UCG_DRAW_ALL);
+
+    for(int y=0;y<240;y++)
+    for(int x=0;x<320;x++)
+    {
+        int ax=x-160;
+        int ay=y-120;
+   //
+        int rx=abs(ax);
+        int ry=abs(ay);
+   //
+        if(rx>ray2) continue;
+        if(ry>ray2) continue;
+        if(rx+ry<ray) continue;
+        int r=rx*rx+ry*ry;
+
+        if(r>ray2*ray2) continue; 
+        if(r<ray*ray) continue; 
+
+        float result=0;
+        if(ay)
+        {
+            result = (int)(180.*atan2(ay,ax)/M_PI);
+            // clip
+            if(result<-180) result=-180;
+            if(result>180) result=180;
+            result+=90;
+            if(result<0) result=result+360;
+            result=(result*100)/360;
+        }
+            else
+        {
+
+            if(ax>0) result=00;
+                    else result=00+180;
+        }
+
+        printf("R=%d\n",(int)result);
+        if(result > percent) continue;
+
+        ucg->drawPixel(x,y);
+    }
+
+#if 0
+    for(int i=0;i<2*angle; i++)
+    {
+        float r=i;
+        r=r*3.1415;
+        r/=360.;
+        float x=ray*sin(r);
+        float y=ray*cos(r);
+        float x2=ray2*sin(r);
+        float y2=ray2*cos(r);
+    
+        ucg->drawLine(centerx+x,centery+y,centerx+x2,centery+y2);
+
+    }
+#endif
+    char str[10];
+    sprintf(str,"%02d %%",percent);
+    ucg->drawString(130,130,0,str);
+
+}
+
 //---
 void draw(Ucglib *ucg)
 {
 
-    int _percent=30;
+    int _percent=66;
     int w=ucg->getWidth();
     int h=ucg->getHeight();
-    
-    float f=ucg->getWidth()*_percent;
-    f/=100;
-            
-    int centery=(h*1)/3;
-    ucg->setColor(0, 255, 255, 255);
-    ucg->drawBox(0,centery-15,w-1,30);
-    ucg->setColor(0, 0, 255, 0);
-    ucg->drawBox(1,centery-14,f-2,28);
-    
-    char str[50];
-    sprintf(str," %d %% done",_percent);
-    ucg->setColor(0, 255, 255, 255);
-    ucg->drawString(10,f*2,0,str);
-    
-    
+    drawPercent(ucg,_percent);
+       
 }

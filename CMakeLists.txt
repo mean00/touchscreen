@@ -54,6 +54,7 @@ include_directories(touchScreen)
 include_directories(serializer)
 include_directories(serial_io)
 include_directories(screenManager)
+include_directories(screens)
 # This reduces size by 10% or so
 #ADD_DEFINITIONS("-ffunction-sections -fdata-sections ")
 generate_arduino_firmware(touchscreen_demo 

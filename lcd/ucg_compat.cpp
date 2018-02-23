@@ -82,5 +82,8 @@ void Ucglib::drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2)
     _tft->  fillTriangle( x0,  y0,  x1,  y1,       x2,  y2, currentColor);
 
 }
-
+void Ucglib::drawPixel(int x0, int y0) 
+{
+    _tft->drawPixel(x0,y0,currentColor);
+}
 //

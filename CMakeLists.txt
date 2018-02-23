@@ -60,6 +60,7 @@ include_directories(screens)
 generate_arduino_firmware(touchscreen_demo 
                 SKETCH dummy_sketch.ino
                 SRCS mainApp.cpp touchScreen/ili_touch.cpp serializer/touchySerializer.cpp serial_io/serialIo.cpp  screenManager/screenManager.cpp 
+			screens/screenUtil.cpp
 			screens/idleScreen.cpp screens/bootScreen.cpp screens/queryScreen.cpp screens/ingestingScreen.cpp
 			${EXTRA_SRC}
                 LIBS ${libPrefix}${LCD_LIB} 

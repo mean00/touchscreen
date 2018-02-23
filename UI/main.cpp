@@ -210,84 +210,125 @@ void drawAskIngest(Ucglib *ucg, int type)
 }
 
 
+       
 
-void drawPercent(Ucglib *ucg, int percent)
+
+#define COMPUTE_AND_DRAW() \
+{\
+   float result=0; \
+        if(y)\
+        { \
+            result = (int)(50.*atan2(y,x)/M_PI); \
+            if(result<-50) result=-50; \
+            if(result>50) result=50; \
+            result+=25; \
+            if(result<0) result=result+100; \
+        } \
+        else\
+        {\
+\
+            if(x>0) result=25;\
+                else \
+                    result=75;\
+        } \
+        if(result > _percent) continue; \
+ \
+        ucg->drawPixel(160+x,120+y); \
+        }
+
+
+#define PRECHECK() \
+        int rx=abs(x); \
+        int ry=abs(y);\
+   \
+        if(rx>ray2) continue;\
+        if(ry>ray2) continue;\
+        if((rx+ry)<ray) continue;\
+        int r=x*x+y*y;\
+\
+        if(r>ray2*ray2) continue; \
+        if(r<ray*ray) continue; 
+
+/**
+ */
+void drawPercent(Ucglib *ucg,int _percent)
 {
+    int w=ucg->getWidth();
+    int h=ucg->getHeight();
        
 
 #define ray0 45
 #define ray  50
 #define ray2 80
 #define ray3 85
-    int centerx=160;
-    int centery=120;
-    ucg->setColor(0, 255, 255, 255);
-
-    int angle=percent;
-    angle=(angle*36)/10;
-
-    ucg->drawCircle(centerx,centery,ray0,UCG_DRAW_ALL);
-    ucg->drawCircle(centerx,centery,ray3,UCG_DRAW_ALL);
-
-    for(int y=0;y<240;y++)
-    for(int x=0;x<320;x++)
-    {
-        int ax=x-160;
-        int ay=y-120;
-   //
-        int rx=abs(ax);
-        int ry=abs(ay);
-   //
-        if(rx>ray2) continue;
-        if(ry>ray2) continue;
-        if(rx+ry<ray) continue;
-        int r=rx*rx+ry*ry;
-
-        if(r>ray2*ray2) continue; 
-        if(r<ray*ray) continue; 
-
-        float result=0;
-        if(ay)
-        {
-            result = (int)(180.*atan2(ay,ax)/M_PI);
-            // clip
-            if(result<-180) result=-180;
-            if(result>180) result=180;
-            result+=90;
-            if(result<0) result=result+360;
-            result=(result*100)/360;
-        }
-            else
-        {
-
-            if(ax>0) result=00;
-                    else result=00+180;
-        }
-
-        printf("R=%d\n",(int)result);
-        if(result > percent) continue;
-
-        ucg->drawPixel(x,y);
-    }
-
-#if 0
-    for(int i=0;i<2*angle; i++)
-    {
-        float r=i;
-        r=r*3.1415;
-        r/=360.;
-        float x=ray*sin(r);
-        float y=ray*cos(r);
-        float x2=ray2*sin(r);
-        float y2=ray2*cos(r);
     
-        ucg->drawLine(centerx+x,centery+y,centerx+x2,centery+y2);
+    ucg->setColor(0, 255, 255, 255);
+    ucg->drawCircle(160,120,ray0,UCG_DRAW_ALL);
+    ucg->drawCircle(160,120,ray3,UCG_DRAW_ALL);
 
+    // 4 quadrant, 0--25, 25--50, 50--75 and 75--100
+    // 1st quadrant
+    {
+    for(int y=-ray2;y<0;y++)
+    for(int x=0;x<ray2;x++)
+    {
+        PRECHECK()
+        if(_percent>=25 && y<=0 && x>=0)
+        {
+            ucg->drawPixel(x+160,y+120);
+            continue;
+        }
+        COMPUTE_AND_DRAW()
     }
-#endif
+    }
+    // 2nd quadrant if > 25%    
+    if(_percent>=25)
+    {
+    for(int y=-0;y<ray2;y++)
+    for(int x=0;x<ray2;x++)
+    {
+        PRECHECK();
+        if(_percent>=50 && y>=0 && x>=0)
+        {
+            ucg->drawPixel(x+160,y+120);
+            continue;
+        }
+        COMPUTE_AND_DRAW()
+    }
+    }
+     // 3nd quadrant if > 50%    
+    if(_percent>=50)
+    {
+    for(int y=0;y<ray2;y++)
+    for(int x=-ray2;x<=0;x++)
+    {
+        PRECHECK();
+        if(_percent>=75 && y>=0 && x<=0)
+        {
+            ucg->drawPixel(x+160,y+120);
+            continue;
+        }
+        COMPUTE_AND_DRAW()
+    }
+    }
+    // 4th quadrant
+    if(_percent>=75)
+    {
+    for(int y=-ray2;y<=0;y++)
+    for(int x=-ray2;x<=0;x++)
+    {
+        PRECHECK();
+        COMPUTE_AND_DRAW()
+    }
+    }
+        
+
+ next:
     char str[10];
-    sprintf(str,"%02d %%",percent);
-    ucg->drawString(130,130,0,str);
+    sprintf(str,"%02d %%",_percent);
+    ucg->drawString(140,130,0,str);
+
+
 
 }
 

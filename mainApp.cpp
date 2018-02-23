@@ -90,7 +90,7 @@ void mySetup(void)
   manager=new ScreenManager (&ucg);
   manager->registerScreen("idle",2,dummySpawner);
   manager->registerScreen("boot",0,bootSpawner);
-  manager->registerScreen("query",0,querySpawner);
+  manager->registerScreen("query",1,querySpawner);
   manager->registerScreen("ingesting",1,ingestingSpawner);
   
 #ifndef BOOT_SCREEN  

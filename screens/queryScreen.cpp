@@ -7,6 +7,7 @@
 #include "touchyDebug.h"
 #include "screenManager.h"
 #include "sdcard.h"
+#include "usb.h"
 #include "screenUtil.h"
 #define TYPE_SD 1
 #define TYPE_USB 2
@@ -21,11 +22,13 @@
 class queryScreen : public Screen
 {
 public:
-        queryScreen()
+        queryScreen(int type)
         {
+            _type=type;
         }
         virtual void draw(Ucglib *ucg);
         virtual bool touched(Ucglib *ucg,int x, int y);    
+        int _type;
 };
 /**
  */
@@ -71,22 +74,21 @@ void drawAskIngest(Ucglib *ucg, int type)
     case TYPE_SD:
       {
             drawBitmap(ucg,160-80,0, (const uint8_t *)sdcard_logo,160,160,0,0xffff);
-       
+            ucg->setColor(0, 255, 255, 255);
+            ucg->drawString(80, 160, 0, "Copy SD card ?");
+  
       }
       break;
     case TYPE_USB:
       {
-        // TODO Make a icon...
-        ucg->setColor(0, 94, 122, 231);
-        ucg->drawString(30, 20, 0, "USB");
+            drawBitmap(ucg,160-80,0, (const uint8_t *)usb_logo,160,160,0,0xffff);
+            ucg->setColor(0, 255, 255, 255);
+            ucg->drawString(50, 160, 0, "Copy USB device ?");
+  
       }
       break;
   }
 
-  ucg->setColor(0, 255, 255, 255);
-
-  // TODO Center text!!!
-  ucg->drawString(60, 160, 0, "Copy SD card ?");
   drawButton(ucg, 30 , ucg->getHeight() - 60, 2);
   drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 60, 1); 
 }
@@ -96,7 +98,7 @@ void drawAskIngest(Ucglib *ucg, int type)
 void queryScreen::draw(Ucglib *ucg)
 {
     LOG("DRAWING query");
-    drawAskIngest(ucg,TYPE_SD); 
+    drawAskIngest(ucg,_type); 
    
  
 }
@@ -136,7 +138,10 @@ bool queryScreen::touched(Ucglib *ucg,int x, int y)
 
 Screen *querySpawner(const char **args)
 {
-    return new queryScreen;
+    int type=TYPE_USB;
+    if(atoi(args[0])==1)
+        type=TYPE_SD;
+    return new queryScreen(type);
 }
 
 //EOF

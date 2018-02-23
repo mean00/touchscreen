@@ -52,7 +52,7 @@ static int index=0;
 
     LOG("DRAWING BOOT");
 
-    drawBitmap(ucg,160-80,30, stx_logo,160,110,0xff,0);
+    drawBitmap(ucg,160-80,30, stx_logo,160,110,0x1f<<5,0);
     drawSmallCircle(ucg,index==0,center-step,middle);
     drawSmallCircle(ucg,index==1,center,middle);
     drawSmallCircle(ucg,index==2,center+step,middle);

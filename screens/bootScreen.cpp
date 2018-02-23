@@ -40,17 +40,20 @@ void drawLogo(Ucglib *ucg,int wx,int wy)
 {
     uint8_t *p=(uint8_t *)stx_logo;
     for(int y=0;y<110;y++)
-        for(int x=0;x<160;x++)
+        for(int x=0;x<160>>3;x++)
         {
-            if(*p) 
-                ucg->setColor(0, 0, 255, 0); // withe color for the text
-            else
-                ucg->setColor(0, 0, 0, 0); // withe color for the text
-            ucg->drawPixel(wx+x,wy+y);
-            p++;
+            int stack=*p++;
+                    
+            for(int step=0;step<8;step++)
+            {
+                int color=0;
+                if(stack&0x80)
+                    color=0xff;
+                ucg->setColor(0, color, color, color); // withe color for the text
+                ucg->drawPixel(wx+x*8+step,wy+y);
+                stack<<=1;
+            }
         }
-    
-    
 }
 /**
  */

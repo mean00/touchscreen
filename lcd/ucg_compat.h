@@ -28,6 +28,7 @@ public:
     void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2) ;
     //
     void drawPixel(int x0, int y0) ;
+    Adafruit_ILI9341_STM *getTft() {return _tft;}
 protected:    
     Adafruit_ILI9341_STM *_tft;
     

@@ -46,6 +46,8 @@ public:
             _percent=p;
         }
         virtual void draw(Ucglib *ucg);
+        virtual void drawx(Ucglib *ucg);
+        virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);
         int _percent;
 };
@@ -92,10 +94,9 @@ public:
  */
 void ingestingScreen::draw(Ucglib *ucg)
 {
-    LOG("DRAWING query");
+    LOG("DRAWING ingesting");
     int w=ucg->getWidth();
     int h=ucg->getHeight();
-       
 
 #define ray0 45
 #define ray  50
@@ -105,7 +106,15 @@ void ingestingScreen::draw(Ucglib *ucg)
     ucg->setColor(0, 255, 255, 255);
     ucg->drawCircle(160,120,ray0,UCG_DRAW_ALL);
     ucg->drawCircle(160,120,ray3,UCG_DRAW_ALL);
+    drawx(ucg);
 
+}
+void ingestingScreen::drawx(Ucglib *ucg)
+{
+    int w=ucg->getWidth();
+    int h=ucg->getHeight();
+
+    ucg->setColor(0, 255, 255, 255);
     // 4 quadrant, 0--25, 25--50, 50--75 and 75--100
     // 1st quadrant
     {
@@ -175,6 +184,16 @@ void ingestingScreen::draw(Ucglib *ucg)
 
 }
 
+
+/**
+ */
+void ingestingScreen::redraw(Ucglib *ucg,const char **arg)
+{
+    
+    LOG("REDRAWING ingesting");
+    _percent=atoi(arg[0]);
+    drawx(ucg);
+}
 
 
 

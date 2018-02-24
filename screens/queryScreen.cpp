@@ -27,6 +27,7 @@ public:
             _type=type;
         }
         virtual void draw(Ucglib *ucg);
+        virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);    
         int _type;
 };
@@ -92,15 +93,21 @@ void drawAskIngest(Ucglib *ucg, int type)
   drawButton(ucg, 30 , ucg->getHeight() - 60, 2);
   drawButton(ucg, ucg->getWidth()-30-100, ucg->getHeight() - 60, 1); 
 }
-
+void redrawAskIngest(Ucglib *ucg, int type)
+{ 
+    
+}
 /**
  */
 void queryScreen::draw(Ucglib *ucg)
 {
     LOG("DRAWING query");
     drawAskIngest(ucg,_type); 
-   
- 
+}
+void queryScreen::redraw(Ucglib *ucg,const char **arg)
+{
+    LOG("DRAWING query");
+    redrawAskIngest(ucg,_type); 
 }
 
 bool buttonMatch(int x, int bx)

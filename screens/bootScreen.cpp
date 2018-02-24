@@ -17,6 +17,7 @@ public:
         {
         }
         virtual void draw(Ucglib *ucg);
+        virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);    
 
 };
@@ -42,6 +43,14 @@ void drawSmallCircle(Ucglib *ucg,bool isTrue, int x, int y)
  */
 void bootScreen::draw(Ucglib *ucg)
 {
+
+    LOG("DRAWING BOOT");
+
+    drawBitmap(ucg,160-80,30, stx_logo,160,110,0x1f<<5,0);
+    redraw(ucg,NULL);
+}
+void bootScreen::redraw(Ucglib *ucg,const char **arg)
+{
 int center=160;
 int step=60;
 int middle=180;
@@ -50,9 +59,7 @@ int rad2=20;
 int r;
 static int index=0;
 
-    LOG("DRAWING BOOT");
 
-    drawBitmap(ucg,160-80,30, stx_logo,160,110,0x1f<<5,0);
     drawSmallCircle(ucg,index==0,center-step,middle);
     drawSmallCircle(ucg,index==1,center,middle);
     drawSmallCircle(ucg,index==2,center+step,middle);
@@ -62,7 +69,6 @@ static int index=0;
   
  
 }
-
 
 /**
  */

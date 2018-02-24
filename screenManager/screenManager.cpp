@@ -7,6 +7,7 @@ ScreenManager:: ScreenManager(Ucglib *theucg)
 {
     ucg=theucg;
     currentScreen=NULL;
+    currentName=NULL;
 }
 bool ScreenManager::registerScreen(const char *name, int nbArgs,ScreenSpawner *spawner )
 {
@@ -21,18 +22,23 @@ bool ScreenManager::redraw()
 {
     if(currentScreen)
     {
-        currentScreen->draw(ucg);
+        currentScreen->redraw(ucg,NULL);
     }
     return true;
 }
 bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
 {
     int n=entries.size();
+    // 
+
+    
+    const char *foundName;
     int found=-1;
     for(int i=0;i<n;i++)
         if(!strcmp(entries[i]->screenName,name))
         {
             found=i;
+            foundName=entries[i]->screenName;
             break;
         }
     if(found==-1)
@@ -46,8 +52,20 @@ bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
         return false;
     }
     LOG("found screen");
+    
+    if(currentScreen && currentName)
+    {
+        if(!strcmp(currentName,name))
+        {
+            currentScreen->redraw(ucg,arg);
+            LOG("Redraw");
+            return true;
+        }
+    }
+    
     if(currentScreen) delete currentScreen;
     currentScreen=NULL;
+    currentName=NULL;
     currentScreen=entries[found]->spawner(arg);
     if(!currentScreen)
     {
@@ -55,6 +73,7 @@ bool ScreenManager::spawnScreen(const char *name, int nb, const char **arg)
         return false;
     }
     currentScreen->setParent(this);
+    currentName=foundName;
     // Reset screen
     
     

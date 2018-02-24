@@ -20,6 +20,7 @@ public:
         bool redraw();
 protected:
         Screen *currentScreen;
+        const char *currentName;
         std::vector <screenEntry *>entries;
         Ucglib *ucg;
 };

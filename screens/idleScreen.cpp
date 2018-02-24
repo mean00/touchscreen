@@ -18,6 +18,7 @@ public:
             _free=freespace;
         }
         virtual void draw(Ucglib *ucg);
+        virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);    
         int          _bat,_free;
 };
@@ -111,6 +112,10 @@ static void centeredPrint(Ucglib *ucg,char *str,int line)
  */
 void dummyScreen::draw(Ucglib *ucg)
 {
+    redraw(ucg,NULL);
+}
+void dummyScreen::redraw(Ucglib *ucg,const char **arg)
+{
 
  LOG("DRAWING idle");
   /* 
@@ -141,7 +146,6 @@ void dummyScreen::draw(Ucglib *ucg)
   
  
 }
-
 
 /**
  */

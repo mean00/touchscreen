@@ -84,8 +84,6 @@ void ingestingScreen::drawx(Ucglib *ucg)
  */
 void ingestingScreen::drawAll(Ucglib *ucg)
 {       
-    ucg->clearScreen();
-    
     quadrant1(ucg);
     quadrant2(ucg);
     quadrant3(ucg);

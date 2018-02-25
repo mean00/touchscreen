@@ -1,20 +1,20 @@
 #include <SPI.h>
 #include <Wire.h>
-#include <XPT2046_Touchscreen.h>
+#include <aXPT2046_Touchscreen.h>
 #include "ili_touch.h"
 #include "ili_calibration.h"
 
 /**
  */
-iliTouch::iliTouch(int w, int h,int rotation,int XpChipSelect,int irq)
+iliTouch::iliTouch(SPIClass &spi,int w, int h,int rotation,int XpChipSelect,int irq)
 {
     _width=w;
     _height=h;
     _rotation=rotation;
     if(irq)
-        xpt=new XPT2046_Touchscreen(XpChipSelect,irq);
+        xpt=new XPT2046_Touchscreen(spi,XpChipSelect,irq);
     else
-        xpt=new XPT2046_Touchscreen(XpChipSelect);
+        xpt=new XPT2046_Touchscreen(spi,XpChipSelect);
      xpt->begin();
 }
 

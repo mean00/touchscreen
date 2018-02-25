@@ -93,6 +93,44 @@ static const int square[]={
 uint16_t scanLine[80];
 void ingestingScreen::quadrant1(Ucglib *ucg)
 {
+  if(_percent>=25) // draw all
+  {
+    uint16_t t90[ray2+1];
+    for(int i=0;i<80;i++) 
+      t90[i]=0xffff;
+    t90[ray2]=0;
+      // 1st quadrant
+    for(int xy=0;xy<ray2;xy++)
+    {      
+        int dex=(xy)*2;
+        int start=precalc[dex];
+        int length=precalc[dex+1]; //precalc[dex+1]+start;
+        int end=start+length;
+        int index=0;
+        int y=-xy;
+        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
+        ucg->getTft()->pushColors(t90,length);
+    }
+    return;
+    }
+    // 1st quadrant
+    for(int xy=0;xy<ray2;xy++)
+    {      
+        int dex=(xy)*2;
+        int start=precalc[dex];
+        int length=precalc[dex+1]; //precalc[dex+1]+start;
+        int end=start+length;
+        int index=0;
+        int y=-xy;
+        int c;
+        for(int x=start;x<end;x++)
+        {
+            COMPUTE_AND_DRAW2();
+            scanLine[index++]=c;
+        }
+        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
+        ucg->getTft()->pushColors(scanLine,length);
+  }
     // 1st quadrant
     for(int xy=0;xy<ray2;xy++)
     {      

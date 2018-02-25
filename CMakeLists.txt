@@ -55,12 +55,14 @@ include_directories(serializer)
 include_directories(serial_io)
 include_directories(screenManager)
 include_directories(screens)
+include_directories(xpt)
 # This reduces size by 10% or so
 #ADD_DEFINITIONS("-ffunction-sections -fdata-sections ")
 generate_arduino_firmware(touchscreen_demo 
                 SKETCH dummy_sketch.ino
                 SRCS mainApp.cpp touchScreen/ili_touch.cpp serializer/touchySerializer.cpp serial_io/serialIo.cpp  screenManager/screenManager.cpp 
 			screens/screenUtil.cpp
+            xpt/aXPT2046_Touchscreen.cpp
 			screens/idleScreen.cpp screens/bootScreen.cpp screens/queryScreen.cpp screens/ingestingScreen.cpp
 			${EXTRA_SRC}
                 LIBS ${libPrefix}${LCD_LIB} 

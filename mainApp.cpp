@@ -69,10 +69,14 @@ extern Screen *ingestingSpawner(const char **args);
 
 
 iliTouch  *ts=NULL;
+
 /**
  */
 void mySetup(void)
 {
+    
+//  SPIClass *spi2=new SPIClass(2);    
+    
   SPI.begin();
   SPI.setBitOrder(MSBFIRST); // Set the SPI bit order
   SPI.setDataMode(SPI_MODE0); //Set the  SPI data mode 0
@@ -84,7 +88,7 @@ void mySetup(void)
   
   ucg.clearScreen();  
   ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
-  ts=new iliTouch(240,320,0,TS_CS_PIN,TS_INTERRUPT_PIN);
+  ts=new iliTouch(SPI,240,320,0,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (&ucg);
@@ -152,6 +156,7 @@ void myLoop(void)
             LOGex(input);
             LOG("Got a string, exiting bootlopo");
             bootloop=false;
+            SPI.setClockDivider (SPI_CLOCK_DIV2);
             ProcessInputString(input);
         }
     }
@@ -160,7 +165,6 @@ void myLoop(void)
 #endif
 #if 1
     bool touched=ts->press(x,y);
-    SPI.setClockDivider (SPI_CLOCK_DIV2);
     if(touched)
     {        
         //LOG("Screen Pressed");
@@ -169,8 +173,8 @@ void myLoop(void)
 #endif
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))
-    {
-        ProcessInputString(input);
+    {        
+        ProcessInputString(input);     
     }
 
 }

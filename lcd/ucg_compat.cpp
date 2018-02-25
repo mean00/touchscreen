@@ -16,7 +16,7 @@ void Ucglib::clearScreen()
 }
 void Ucglib::begin(int fontMode)
 {
-    _tft->begin();
+    _tft->begin();//SPI,10000000);
     _tft->setTextSize(2);
 
 }

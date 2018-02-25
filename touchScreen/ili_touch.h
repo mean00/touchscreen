@@ -9,7 +9,7 @@
 class iliTouch
 {
 public:
-                    iliTouch(int w,int h,int rotation,int XpChipSelect, int irq=-1);
+                    iliTouch(SPIClass &spi,int w,int h,int rotation,int XpChipSelect, int irq=-1);
             bool    press(int &x,  int &y);
 private:
             XPT2046_Touchscreen *xpt;

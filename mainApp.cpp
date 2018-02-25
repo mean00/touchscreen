@@ -59,17 +59,10 @@ extern Screen *ingestingSpawner(const char **args);
 #define TS_CS_PIN        PA3
 
 
-#ifdef FAST_LCD
-   Adafruit_ILI9341_STM tft = Adafruit_ILI9341_STM(PA0, PA2,PA1);
-   Ucglib  ucg(&tft);
 
-#else
-    Ucglib_ILI9341_18x240x320_HWSPI ucg(/*cd=*/ PA2, /*cs=*/ PA0, /*reset=*/ PA1);
-#endif
-
-
+Adafruit_ILI9341_STM *tft;
 iliTouch  *ts=NULL;
-
+Ucglib  *ucg;
 /**
  */
 void mySetup(void)
@@ -84,14 +77,22 @@ void mySetup(void)
 
   Serial.begin();
   Serial.println("Start");
-  ucg.begin(UCG_FONT_MODE_SOLID);
   
-  ucg.clearScreen();  
-  ucg.setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
+  
+   tft = new Adafruit_ILI9341_STM(PA0, PA2,PA1);
+   ucg=new Ucglib(tft);
+
+
+  
+  
+  ucg->begin(UCG_FONT_MODE_SOLID);
+  
+  ucg->clearScreen();  
+  ucg->setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
   ts=new iliTouch(SPI,240,320,0,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
-  manager=new ScreenManager (&ucg);
+  manager=new ScreenManager (ucg);
   manager->registerScreen("idle",2,dummySpawner);
   manager->registerScreen("boot",0,bootSpawner);
   manager->registerScreen("query",1,querySpawner);
@@ -170,6 +171,7 @@ void myLoop(void)
         //LOG("Screen Pressed");
         manager->clicked(x,y);
     }
+    SPI.setClockDivider (SPI_CLOCK_DIV2);
 #endif
     arduinoSerial::run();
     if(arduinoSerial::hasString(&input))

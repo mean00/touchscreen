@@ -1,4 +1,4 @@
-
+#include "precalc.h"
 static const int square[]={
     0,1,4,9,16,25,36,49,64,81,100,121,144,169,196,225,
 256,289,324,361,400,441,484,529,576,625,676,729,784,841,900,961,
@@ -54,6 +54,26 @@ static const int square[]={
         if(result > _percent) continue; \
         ucg->drawPixel(160+x,120+y); \
         }
+#define COMPUTE_AND_DRAW2() \
+{\
+   float result=0; \
+        if(y)\
+        { \
+            result = (int)(50.*atan2(y,x)/M_PI); \
+            if(result<-50) result=-50; \
+            if(result>50) result=50; \
+            result+=25; \
+            if(result<0) result=result+100; \
+        } \
+        else\
+        {\
+            if(x>0) result=25;\
+                else \
+                    result=75;\
+        } \
+        if(result > _percent) c=0; \
+            else c=0xffff; \
+        }
 
 
 #define PRECHECK() \
@@ -70,27 +90,26 @@ static const int square[]={
         if(r<ray*ray) continue; 
 
         
-
+uint16_t scanLine[80];
 void ingestingScreen::quadrant1(Ucglib *ucg)
 {
     // 1st quadrant
-   int lastx=0;
-   
-    for(int y=-ray2;y<0;y++)
+    for(int xy=0;xy<ray2;xy++)
     {      
+        int dex=(xy)*2;
+        int start=precalc[dex];
+        int length=precalc[dex+1]; //precalc[dex+1]+start;
+        int end=start+length;
         int index=0;
-        for(int x=0;x<ray2;x++)
+        int y=-xy;
+        int c;
+        for(int x=start;x<end;x++)
         {
-            if(x<lastx)  {continue;};
-            PRECHECK()
-            if(!lastx) lastx=x;
-            if(_percent>=25 && y<=0 && x>=0)
-            {
-                ucg->drawPixel(x+160,y+120);
-                continue;
-            }
-            COMPUTE_AND_DRAW()
+            COMPUTE_AND_DRAW2();
+            scanLine[index++]=c;
         }
+        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
+        ucg->getTft()->pushColors(scanLine,length);
     } 
 }
 void ingestingScreen::quadrant2(Ucglib *ucg)

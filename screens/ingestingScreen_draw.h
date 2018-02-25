@@ -47,13 +47,11 @@ static const int square[]={
         } \
         else\
         {\
-\
             if(x>0) result=25;\
                 else \
                     result=75;\
         } \
         if(result > _percent) continue; \
- \
         ucg->drawPixel(160+x,120+y); \
         }
 
@@ -71,63 +69,85 @@ static const int square[]={
         if(r>ray2*ray2) continue; \
         if(r<ray*ray) continue; 
 
-void ingestingScreen::quadant1(Ucglib *ucg)
+        
+
+void ingestingScreen::quadrant1(Ucglib *ucg)
 {
-     // 4 quadrant, 0--25, 25--50, 50--75 and 75--100
     // 1st quadrant
-    {
+   int lastx=0;
+   
     for(int y=-ray2;y<0;y++)
-    for(int x=0;x<ray2;x++)
-    {
-        PRECHECK()
-        if(_percent>=25 && y<=0 && x>=0)
+    {      
+        int index=0;
+        for(int x=0;x<ray2;x++)
         {
-            ucg->drawPixel(x+160,y+120);
-            continue;
+            if(x<lastx)  {continue;};
+            PRECHECK()
+            if(!lastx) lastx=x;
+            if(_percent>=25 && y<=0 && x>=0)
+            {
+                ucg->drawPixel(x+160,y+120);
+                continue;
+            }
+            COMPUTE_AND_DRAW()
         }
-        COMPUTE_AND_DRAW()
-    }
     } 
 }
-void ingestingScreen::quadant2(Ucglib *ucg)
-{
-    for(int y=0;y<ray2;y++)
-    for(int x=0;x<ray2;x++)
-    {
-        PRECHECK();
-        if(_percent>=50 && y>=0 && x>=0)
-        {
-            ucg->drawPixel(x+160,y+120);
-            continue;
-        }
-        COMPUTE_AND_DRAW()
-    }
-}
-void ingestingScreen::quadant3(Ucglib *ucg)
-{
+void ingestingScreen::quadrant2(Ucglib *ucg)
+{    
+    int lastx=0;
     for(int y=ray2-1;y>=0;y--)
-    for(int x=-ray2;x<0;x++)
-    {
-        PRECHECK();
-        if(_percent>=75 && y>=0 && x<=0)
+    {        
+        for(int x=0;x<ray2;x++)
         {
-            ucg->drawPixel(x+160,y+120);
-            continue;
+            if(x<lastx) continue;
+            PRECHECK();
+            if(!lastx) lastx=x;
+            if(_percent>=50 && y>=0 && x>=0)
+            {
+                ucg->drawPixel(x+160,y+120);
+                continue;
+            }
+            COMPUTE_AND_DRAW()
         }
-        COMPUTE_AND_DRAW()
-    } 
+    }
 }
-void ingestingScreen::quadant4(Ucglib *ucg)
+void ingestingScreen::quadrant3(Ucglib *ucg)
 {
-    for(int y=0;y>-ray2+1;y--)
-    for(int x=-ray2;x<0;x++)
-    {
-        PRECHECK();
-        if(_percent>=75 && y>=0 && x<=0)
+    int lastx=-320;
+    for(int y=0;y<ray2;y++)
+      {
+        for(int x=-ray2+1;x<0;x++)
         {
-            ucg->drawPixel(x+160,y+120);
-            continue;
+            if(x<lastx) continue;
+            PRECHECK();
+            if(lastx==-320) lastx=x;
+            if(_percent>=75 && y>=0 && x<=0)
+            {
+                ucg->drawPixel(x+160,y+120);
+                continue;
+            }
+            COMPUTE_AND_DRAW()
+        } 
+      }
+}
+void ingestingScreen::quadrant4(Ucglib *ucg)
+{
+    int lastx=-ray2;
+    for(int y=0;y>-ray2+1;y--)
+    {
+        for(int x=-ray2+1;x<0;x++)
+        {
+            if(x<lastx) continue;
+            PRECHECK();
+            if(lastx==-ray2)
+              lastx=x;
+            if(_percent>=75 && y>=0 && x<=0)
+            {
+                ucg->drawPixel(x+160,y+120);
+                continue;
+            }
+            COMPUTE_AND_DRAW()
         }
-        COMPUTE_AND_DRAW()
     }
 }

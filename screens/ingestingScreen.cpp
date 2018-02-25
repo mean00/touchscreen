@@ -22,84 +22,112 @@ public:
             _percent=p;        
         }
         
-        void quadant1(Ucglib *ucg);
-        void quadant2(Ucglib *ucg);
-        void quadant3(Ucglib *ucg);
-        void quadant4(Ucglib *ucg);
+        void quadrant1(Ucglib *ucg);
+        void quadrant2(Ucglib *ucg);
+        void quadrant3(Ucglib *ucg);
+        void quadrant4(Ucglib *ucg);
         
+        void         drawAll(Ucglib *ucg);
         virtual void draw(Ucglib *ucg);
-        virtual void drawx(Ucglib *ucg);
+                void drawx(Ucglib *ucg);
         virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);
         int _percent;
+        int _oldPercent;
 };
 
 #include "ingestingScreen_draw.h"
 
-/**
- */
-void ingestingScreen::draw(Ucglib *ucg)
-{
-    LOG("DRAWING ingesting");
-    int w=ucg->getWidth();
-    int h=ucg->getHeight();
-
-    
-    ucg->setColor(0, 255, 255, 255);
-    ucg->drawCircle(160,120,ray0,UCG_DRAW_ALL);
-    ucg->drawCircle(160,120,ray3,UCG_DRAW_ALL);
-    drawx(ucg);
-
-}
 
 
 /**
  */
 void ingestingScreen::drawx(Ucglib *ucg)
-{
-   
+{       
+
     ucg->setColor(0, 255, 255, 255);
-    quadant1(ucg);
-    // 2nd quadrant if > 25%    
-    if(_percent>=25)
+    if(_oldPercent<25)
     {
-        quadant2(ucg);
+        quadrant1(ucg);
+    }
+    if(_oldPercent<50)
+    {
+        // 2nd quadrant if > 25%        
+        if(_percent>=25)
+        {
+            quadrant2(ucg);
+        }
     }
      // 3nd quadrant if > 50%    
-    if(_percent>=50)
+    if(_oldPercent<75)
     {
-        quadant3(ucg);
+        if(_percent>=50)
+        {
+            quadrant3(ucg);
+        }
     }
     // 4th quadrant
     if(_percent>=75)
     {
-        quadant4(ucg);
+        quadrant4(ucg);
     }
         
 
  next:
     char str[10];
     sprintf(str,"%02d %%",_percent);
+    ucg->getTft()->setTextColor(0xffff,0);
     ucg->drawString(140,128,0,str);
 
+}
+/**
+ */
+void ingestingScreen::drawAll(Ucglib *ucg)
+{       
+    ucg->clearScreen();
+    
+    quadrant1(ucg);
+    quadrant2(ucg);
+    quadrant3(ucg);
+    quadrant4(ucg);    
+    
+    ucg->setColor(0, 0, 0, 0);
+    ucg->drawBox(140,128,5*12,12);
+    ucg->setColor(0, 255, 255, 255);
+    
+    char str[10];
+    
+    sprintf(str,"%02d %%",_percent);
+    ucg->drawString(140,128,0,str);
+}
+
+/**
+ */
+void ingestingScreen::redraw(Ucglib *ucg,const char **arg)
+{    
+    LOG("REDRAWING ingesting");
+    ucg->setColor(0, 255, 255, 255);
+    _oldPercent=_percent;
+    _percent=atoi(arg[0]);
+    char st[10];
+    sprintf(st,"p:%d",_percent);
+    LOGex(st);
+    drawAll(ucg);
 }
 
 
 /**
  */
-void ingestingScreen::redraw(Ucglib *ucg,const char **arg)
+void ingestingScreen::draw(Ucglib *ucg)
 {
-    
-    LOG("REDRAWING ingesting");
-    _percent=atoi(arg[0]);
-    char st[10];
-    sprintf(st,"p:%d",_percent);
-    LOGex(st);
-    ucg->clearScreen();
+    LOG("DRAWING ingesting");    
+    _oldPercent=0;
+    ucg->setColor(0, 255, 255, 255);
+    ucg->drawCircle(160,120,ray0,UCG_DRAW_ALL);
+    ucg->drawCircle(160,120,ray3,UCG_DRAW_ALL);
     drawx(ucg);
+
 }
-
-
 
 /**
  */

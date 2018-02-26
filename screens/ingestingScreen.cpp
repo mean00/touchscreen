@@ -6,10 +6,12 @@
 #include "screen.h"
 #include "touchyDebug.h"
 #include "screenManager.h"
+#include "screenUtil.h"
 
 /**
  */
-
+#define base_x 200
+#define base_y 200
 
 #define ray0 45
 #define ray  50
@@ -140,14 +142,31 @@ void ingestingScreen::draw(Ucglib *ucg)
     ucg->drawCircle(160,120,ray0,UCG_DRAW_ALL);
     ucg->drawCircle(160,120,ray3,UCG_DRAW_ALL);
     drawx(ucg);
+    drawButton(ucg, base_x ,base_y,"Stop");
 
 }
+
+static bool buttonMatch(int x, int bx)
+{
+    if(x>=bx && x<=(bx+button_width))
+        return true;
+    return false;
+}
+
 
 /**
  */
 bool ingestingScreen::touched(Ucglib *ucg,int x, int y)
 {
   
+    if((y+2>=base_y) && (y<=button_height+base_y-2))
+    {
+        if(buttonMatch(x,base_x))
+        {
+            parent->sendEvent("0");
+            return true;
+        }
+    }     
     return false;
 }
 

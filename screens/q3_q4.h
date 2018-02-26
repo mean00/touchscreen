@@ -55,7 +55,7 @@
         } else \
         for(int x=start;x<end;x++) \
         { \
-            COMPUTE_AND_DRAW2(); \
+            COMPUTE_AND_DRAW_Q3(); \
             index++; \
             if(!c) break; \
         } \
@@ -71,7 +71,7 @@
         } else \
         for(int x=start;x<end;x++) \
         { \
-            COMPUTE_AND_DRAW2_Y(); \
+            COMPUTE_AND_DRAW2_Q4(); \
             index++; \
             if(!c) break; \
         } 

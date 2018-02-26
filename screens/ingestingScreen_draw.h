@@ -26,83 +26,10 @@ static const int square[]={
  */
 
 
-
-#define COMPUTE_AND_DRAW() \
-{\
-   float result=0; \
-        if(y)\
-        { \
-            result = (int)(50.*atan2(y,x)/M_PI); \
-            if(result<-50) result=-50; \
-            if(result>50) result=50; \
-            result+=25; \
-            if(result<0) result=result+100; \
-        } \
-        else\
-        {\
-            if(x>0) result=25;\
-                else \
-                    result=75;\
-        } \
-        if(result > _percent) continue; \
-        ucg->drawPixel(160+x,120+y); \
-        }
-#define COMPUTE_AND_DRAW2() \
-{\
-   float result=0; \
-        if(y)\
-        { \
-            result = (int)(50.*atan2(y,x)/M_PI); \
-            if(result<-50) result=-50; \
-            if(result>50) result=50; \
-            result+=25; \
-            if(result<0) result=result+100; \
-        } \
-        else\
-        {\
-            if(x>0) result=25;\
-                else \
-                    result=75;\
-        } \
-        if(result > _percent) c=0; \
-            else c=0xffff; \
-        }
-#define COMPUTE_AND_DRAW2_Y() \
-{\
-   float result=0; \
-        if(x)\
-        { \
-            result = (int)(50.*atan2(x,y)/M_PI); \
-            if(result<-50) result=-50; \
-            if(result>50) result=50; \
-            result+=25; \
-            if(result<0) result=result+100; \
-        } \
-        else\
-        {\
-            if(y>0) result=25;\
-                else \
-                    result=75;\
-        } \
-        if(result > _percent) c=0; \
-            else c=0xffff; \
-        }
-
-#define PRECHECK() \
-        int rx,ry; \
-        if(x<0) rx=-x; else rx=x; \
-        if(y<0) ry=-y; else ry=y; \
-   \
-        if(rx>ray2) continue;\
-        if(ry>ray2) continue;\
-        if((rx+ry)<ray) continue;\
-        int r=square[rx]+square[ry]; \
-\
-        if(r>ray2*ray2) continue; \
-        if(r<ray*ray) continue; 
-
+      
        
 #define PREAMBLE \
+        int ry; \        
         int dex=(xy)*4; \
         int start=precalc[dex]; \
         int length=precalc[dex+1]; \
@@ -111,89 +38,11 @@ static const int square[]={
         int end=start+length; \
         int index=0; \
         int c; \
-        int p=fmula;
+        int p=fmula; \
+        if(y<0) ry=-y; else ry=y; 
 
-#define BODY \
-         if(p>maxPercent) \ 
-        { \
-            index=end-start; \
-        } else \
-        if(p<minPercent) \
-        { \
-            index=0; \            
-        } else \
-        for(int x=start;x<end;x++) \
-        { \
-            COMPUTE_AND_DRAW2(); \
-            index++; \
-            if(!c) break; \
-        } \
-        
-#define BODY_Y \  
-        if(p>maxPercent) \ 
-        { \
-            index=end-start; \
-        } else \
-        if(p<minPercent) \
-        { \
-            index=0; \            
-        } else \
-        for(int x=start;x<end;x++) \
-        { \
-            COMPUTE_AND_DRAW2_Y(); \
-            index++; \
-            if(!c) break; \
-        } 
-        
-#define BODY_INVERT \
-        if(p<minPercent) \ 
-        { \
-            index=end-start; \            
-        } else \
-        if(p>maxPercent) \
-        { \
-            index=0; \
-        } else\
-        for(int x=start;x<end;x++) \
-        { \
-            COMPUTE_AND_DRAW2(); \
-            index++; \
-            \
-        } 
-             
-#define BODY_INVERT_Y \
-        if(p<minPercent) \ 
-        { \
-            index=end-start;\          
-        } else\
-        if(p>maxPercent) \
-        { \
-            index=0; \
-            continue; \
-        } else\
-        for(int x=start;x<end;x++) \
-        { \
-            COMPUTE_AND_DRAW2_Y(); \
-            index++; \
-        }   
-        
-        
-#define DRAW \        
-        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
-        ucg->getTft()->pushColors(fullLine,index);
-
-#define DRAW_BACK \        
-        ucg->getTft()->setAddrWindow(160-index-start,y+120,160-start,y+120); \
-        ucg->getTft()->pushColors(fullLine,index);
-
-#define DRAW_Y \        
-        ucg->getTft()->setAddrWindow(160+xy,120+start,160+xy,120+start+index); \
-        ucg->getTft()->pushColors(fullLine,index);
-
-#define DRAW_Y_BACK \        
-        ucg->getTft()->setAddrWindow(160-xy,120+start,160-xy,120+start+index); \
-        ucg->getTft()->pushColors(fullLine,index);
-        
+#include "q1_q2.h"
+#include "q3_q4.h"
         
 uint16_t scanLine[80];
 /**
@@ -204,11 +53,11 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
     // 1st quadrant
     int fmula=_percent;
     for(int xy=0;xy<ray2;xy++) 
-    {      
-        PREAMBLE
+    {   
         int y=-xy;
-        BODY
-        DRAW
+        PREAMBLE        
+        BODY_Q1
+        DRAW_Q1
     } 
 }
 
@@ -221,10 +70,10 @@ void ingestingScreen::quadrant2(Ucglib *ucg)
     if(fmula>25) fmula=25;
     for(int xy=0;xy<ray2;xy++) // it is X actually
     {
-        PREAMBLE
         int y=xy;
-        BODY_Y
-        DRAW_Y
+        PREAMBLE
+        BODY_Q2
+        DRAW_Q2
     } 
 }
 //----
@@ -237,10 +86,10 @@ void ingestingScreen::quadrant3(Ucglib *ucg)
     if(fmula<0) fmula=0;
     for(int xy=0;xy<ray2;xy++) // it is X actually
     {
-        PREAMBLE
         int y=-xy;
-        BODY_INVERT_Y
-        DRAW_Y_BACK
+        PREAMBLE
+        BODY_Q3
+        DRAW_Q3
     } 
 }
 
@@ -251,9 +100,9 @@ void ingestingScreen::quadrant4(Ucglib *ucg)
     int fmula=100-_percent;
     for(int xy=0;xy<ray2;xy++) //y 
     {      
-        PREAMBLE
         int y=-xy;
-        BODY_INVERT
-        DRAW_BACK
+        PREAMBLE
+        BODY_Q4
+        DRAW_Q4
     } 
 }

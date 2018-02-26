@@ -35,7 +35,6 @@ public:
         
         void quadrant1(Ucglib *ucg);
         void quadrant2(Ucglib *ucg);
-        void quadrant2Full(Ucglib *ucg);
         void quadrant3(Ucglib *ucg);
         void quadrant4(Ucglib *ucg);
         
@@ -102,10 +101,7 @@ void ingestingScreen::drawAll(Ucglib *ucg)
     quadrant1(ucg);
     if(_percent>25)
     {
-        if(_percent>=50)
-            quadrant2Full(ucg);
-        else
-            quadrant2(ucg);
+        quadrant2(ucg);
         if(_percent>50)
         {
             quadrant3(ucg);
@@ -133,9 +129,6 @@ void ingestingScreen::redraw(Ucglib *ucg,const char **arg)
     ucg->setColor(0, 255, 255, 255);
     _oldPercent=_percent;
     _percent=atoi(arg[0]);
-    char st[10];
-    sprintf(st,"p:%d",_percent);
-    LOGex(st);
     drawAll(ucg);
 }
 

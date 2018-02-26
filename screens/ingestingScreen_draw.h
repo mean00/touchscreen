@@ -82,87 +82,86 @@ static const int square[]={
         if(r>ray2*ray2) continue; \
         if(r<ray*ray) continue; 
 
+       
+#define PREAMBLE \
+        int dex=(xy)*4; \
+        int start=precalc[dex]; \
+        int length=precalc[dex+1]; \
+        int minPercent=precalc[dex+2]; \
+        int maxPercent=precalc[dex+3]; \
+        int end=start+length; \
+        int index=0; \
+        int c; \
+        int p=fmula;
+
+#define BODY \
+        if(p>maxPercent) \ 
+        { \
+            ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
+            ucg->getTft()->pushColors(fullLine,length); \
+            continue; \
+        }\
+        if(p<minPercent) \
+        { \
+            continue; \
+        } \
+        for(int x=start;x<end;x++) \
+        { \
+            COMPUTE_AND_DRAW2(); \
+            scanLine[index++]=c; \
+            if(!c) break; \
+        } \
+        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
+        ucg->getTft()->pushColors(scanLine,index);
         
+#define BODY_INVERT \
+        if(p<minPercent) \ 
+        { \
+            ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
+            ucg->getTft()->pushColors(fullLine,length); \
+            continue; \
+        }\
+        if(p>maxPercent) \
+        { \
+            continue; \
+        } \
+        for(int x=start;x<end;x++) \
+        { \
+            COMPUTE_AND_DRAW2(); \
+            scanLine[index++]=c; \
+            if(!c) break; \
+        } \
+        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
+        ucg->getTft()->pushColors(scanLine,index);
+
 uint16_t scanLine[80];
 /**
  */
 void ingestingScreen::quadrant1(Ucglib *ucg)
 {      
     // 1st quadrant
+    int fmula=_percent;
     for(int xy=0;xy<ray2;xy++)
     {      
-        int dex=(xy)*4;
-        int start=precalc[dex];
-        int length=precalc[dex+1]; //precalc[dex+1]+start;
-        int minPercent=precalc[dex+2];
-        int maxPercent=precalc[dex+3];
-        int end=start+length;
-        int index=0;
+        PREAMBLE
         int y=-xy;
-        int c;
-
-        if(_percent>maxPercent) // full line
-        {
-            ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
-            ucg->getTft()->pushColors(fullLine,length); 
-            continue;
-        }
-        if(_percent<minPercent) // nothing to draw
-        {
-            continue;
-        }
-        //---
-        // we need to evaluate every pixel here
-        //---
-        for(int x=start;x<end;x++)
-        {
-            COMPUTE_AND_DRAW2();
-            scanLine[index++]=c;
-            if(!c) break;
-        }
-        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
-        ucg->getTft()->pushColors(scanLine,index);
+        BODY
     } 
 }
-
-
 //----------
 void ingestingScreen::quadrant2(Ucglib *ucg)
-{    
+{            
     // 2nd quadrant
+    int fmula=50-_percent;
+    if(fmula<0) fmula=0;
     for(int xy=ray2-1;xy>=0;xy--)
-    {      
-        int dex=(xy)*4;
-        int start=precalc[dex];
-        int length=precalc[dex+1]; //precalc[dex+1]+start;
-        int end=start+length;
-        int index=0;
+    {
+        PREAMBLE
         int y=xy;
-        int c;
-        for(int x=start;x<end;x++)
-        {
-            COMPUTE_AND_DRAW2();
-            scanLine[index++]=c;
-        }
-        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
-        ucg->getTft()->pushColors(scanLine,index);
+        BODY_INVERT
     } 
 }
-void ingestingScreen::quadrant2Full(Ucglib *ucg)
-{    
-      // 1st quadrant
-    for(int xy=ray2-1;xy>=0;xy--)
-    {      
-        int dex=(xy)*4;
-        int start=precalc[dex];
-        int length=precalc[dex+1]; //precalc[dex+1]+start;
-        int end=start+length;        
-        int y=xy;
-        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120);
-        ucg->getTft()->pushColors(fullLine,length);
-    }
-    return;  
-}
+
 
 //----------------
 

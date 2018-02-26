@@ -36,7 +36,7 @@ static void drawButton(Ucglib *ucg, int x, int y)
 
   ucg->setColor(0, 255, 255, 255);
     // TODO Center text!!!
-  ucg->drawString(x + 22+10, str_y, 0, "Done");
+  ucg->drawString(x + 22+10, str_y, 0, " Ok");
   ucg->drawRFrame(x, y, button_width, button_height, 2);
 }
 /**

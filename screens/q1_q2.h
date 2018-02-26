@@ -1,11 +1,11 @@
 
 
-#define COMPUTE_AND_DRAW2() \
+#define COMPUTE_AND_DRAW_Q1() \
 {\
    float result=0; \
         if(y)\
         { \
-            result = (int)(50.*atan2(ry,x)/M_PI); \
+            result = (int)(50.*atan2(y,x)/M_PI); \
             if(result<-50) result=-50; \
             if(result>50) result=50; \
             result+=25; \
@@ -20,7 +20,7 @@
         if(result > _percent) c=0; \
             else c=0xffff; \
         }
-#define COMPUTE_AND_DRAW2_Y() \
+#define COMPUTE_AND_DRAW_Q2() \
 {\
    float result=0; \
         if(x)\
@@ -54,7 +54,7 @@
         } else \
         for(int x=start;x<end;x++) \
         { \
-            COMPUTE_AND_DRAW2(); \
+            COMPUTE_AND_DRAW_Q1(); \
             index++; \
             if(!c) break; \
         } \
@@ -70,7 +70,7 @@
         } else \
         for(int x=start;x<end;x++) \
         { \
-            COMPUTE_AND_DRAW2_Y(); \
+            COMPUTE_AND_DRAW_Q2(); \
             index++; \
             if(!c) break; \
         } 

@@ -114,6 +114,7 @@ void queryScreen::redraw(Ucglib *ucg,const char **arg)
         redrawAskIngest(ucg,_type); 
     else
     {
+        ucg->clearScreen();
         _type=type;
         draw(ucg);
     }

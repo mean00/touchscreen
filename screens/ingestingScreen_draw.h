@@ -191,21 +191,6 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
     } 
 }
 
-//----------------
-
-void ingestingScreen::quadrant3(Ucglib *ucg)
-{
-    
-      // 2nd quadrant
-    int fmula=_percent-50;    
-    for(int xy=0;xy<ray2;xy++)
-    {
-        PREAMBLE
-        int y=xy;
-        BODY;
-        DRAW_BACK;
-    } 
-}
 //----------
 void ingestingScreen::quadrant2(Ucglib *ucg)
 {            
@@ -220,24 +205,33 @@ void ingestingScreen::quadrant2(Ucglib *ucg)
         DRAW_Y
     } 
 }
+//----
+//----------------
+
+void ingestingScreen::quadrant3(Ucglib *ucg)
+{
+     // 3rd quadrant
+    int fmula=_percent-50;
+    if(fmula>50) fmula=50;
+    for(int xy=0;xy<ray2;xy++) // it is X actually
+    {
+        PREAMBLE
+        int y=-xy;
+        BODY_Y
+        DRAW_Y
+    } 
+}
+
 //------
 void ingestingScreen::quadrant4(Ucglib *ucg)
 {
-    int lastx=-ray2;
-    for(int y=0;y>-ray2+1;y--)
-    {
-        for(int x=-ray2+1;x<0;x++)
-        {
-            if(x<lastx) continue;
-            PRECHECK();
-            if(lastx==-ray2)
-              lastx=x;
-            if(_percent>=75 && y>=0 && x<=0)
-            {
-                ucg->drawPixel(x+160,y+120);
-                continue;
-            }
-            COMPUTE_AND_DRAW()
-        }
-    }
+     // 1st quadrant
+    int fmula=100-_percent;
+    for(int xy=0;xy<ray2;xy++) //y 
+    {      
+        PREAMBLE
+        int y=-xy;
+        BODY
+        DRAW
+    } 
 }

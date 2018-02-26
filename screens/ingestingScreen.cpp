@@ -109,10 +109,7 @@ void ingestingScreen::drawAll(Ucglib *ucg)
         }
         
     }
-    
-    ucg->setColor(0, 0, 0, 0);
-    ucg->drawBox(140,128,5*12,12);
-    ucg->setColor(0, 255, 255, 255);
+    ucg->getTft()-> fillRect(140,100,5*10,45,0);
     
     char str[10];
     

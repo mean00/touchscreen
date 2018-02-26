@@ -67,7 +67,26 @@ static const int square[]={
         if(result > _percent) c=0; \
             else c=0xffff; \
         }
-
+#define COMPUTE_AND_DRAW2_Y() \
+{\
+   float result=0; \
+        if(x)\
+        { \
+            result = (int)(50.*atan2(x,y)/M_PI); \
+            if(result<-50) result=-50; \
+            if(result>50) result=50; \
+            result+=25; \
+            if(result<0) result=result+100; \
+        } \
+        else\
+        {\
+            if(y>0) result=25;\
+                else \
+                    result=75;\
+        } \
+        if(result > _percent) c=0; \
+            else c=0xffff; \
+        }
 
 #define PRECHECK() \
         int rx,ry; \
@@ -111,8 +130,14 @@ static const int square[]={
             index++; \
             if(!c) break; \
         } \
-        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
-        ucg->getTft()->pushColors(scanLine,index);
+        
+#define BODY2 \       
+        for(int x=start;x<end;x++) \
+        { \
+            COMPUTE_AND_DRAW2_Y(); \
+            index++; \
+            if(!c) break; \
+        } \
         
 #define BODY_INVERT \
         if(p<minPercent) \ 
@@ -139,6 +164,11 @@ static const int square[]={
         ucg->getTft()->setAddrWindow(160-index-start,y+120,160-start,y+120); \
         ucg->getTft()->pushColors(fullLine,index);
 
+#define DRAW_Y \        
+        ucg->getTft()->setAddrWindow(160+xy,120+start,160+xy,120+start+index); \
+        ucg->getTft()->pushColors(fullLine,index);
+        
+        
 uint16_t scanLine[80];
 /**
  */
@@ -146,7 +176,7 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
 {      
     // 1st quadrant
     int fmula=_percent;
-    for(int xy=0;xy<ray2;xy++)
+    for(int xy=0;xy<ray2;xy++) 
     {      
         PREAMBLE
         int y=-xy;
@@ -174,14 +204,14 @@ void ingestingScreen::quadrant3(Ucglib *ucg)
 void ingestingScreen::quadrant2(Ucglib *ucg)
 {            
     // 2nd quadrant
-    int fmula=50-_percent;
-    if(fmula<0) fmula=0;
-    for(int xy=ray2-1;xy>=0;xy--)
+    int fmula=_percent-25;
+    if(fmula>25) fmula=25;
+    for(int xy=0;xy<ray2;xy++) // it is X actually
     {
         PREAMBLE
         int y=xy;
-        BODY_INVERT
-        DRAW
+        BODY2
+        DRAW_Y
     } 
 }
 //------

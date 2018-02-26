@@ -114,16 +114,14 @@ static const int square[]={
         int p=fmula;
 
 #define BODY \
-        if(p>maxPercent) \ 
+         if(p>maxPercent) \ 
         { \
-            ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
-            ucg->getTft()->pushColors(fullLine,length); \
-            continue; \
-        }\
+            index=end-start; \
+        } else \
         if(p<minPercent) \
         { \
-            continue; \
-        } \
+            index=0; \            
+        } else \
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW2(); \
@@ -145,7 +143,7 @@ static const int square[]={
             COMPUTE_AND_DRAW2_Y(); \
             index++; \
             if(!c) break; \
-        } \
+        } 
         
 #define BODY_INVERT \
         if(p<minPercent) \ 

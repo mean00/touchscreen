@@ -33,7 +33,7 @@ public:
 };
 /**
  */
-void drawButton(Ucglib *ucg, int x, int y, int type)
+static void drawButton(Ucglib *ucg, int x, int y, int type)
 {
   int str_y = y + button_height / 2 + 8;
 
@@ -110,7 +110,7 @@ void queryScreen::redraw(Ucglib *ucg,const char **arg)
     redrawAskIngest(ucg,_type); 
 }
 
-bool buttonMatch(int x, int bx)
+static bool buttonMatch(int x, int bx)
 {
     if(x>=bx && x<=(bx+button_width))
         return true;

@@ -117,7 +117,8 @@ bool ScreenManager::sendEvent(const char *event)
     }
     char bfer[100];
     strcpy(bfer,"EVENT;");
-    strcat(bfer,"query;"); // FIXME
+    strcat(bfer,currentName);
+    strcat(bfer,";");
     strcat(bfer,event);
     Serial.println(bfer);
 }

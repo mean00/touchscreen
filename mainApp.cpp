@@ -54,6 +54,7 @@ extern Screen *dummySpawner(const char **args);
 extern Screen *bootSpawner(const char **args);
 extern Screen *querySpawner(const char **args);
 extern Screen *ingestingSpawner(const char **args);
+extern Screen *jobDoneSpawner(const char **args);
 
 #define TS_INTERRUPT_PIN PB6
 #define TS_CS_PIN        PA3
@@ -97,7 +98,7 @@ void mySetup(void)
   manager->registerScreen("boot",0,bootSpawner);
   manager->registerScreen("query",1,querySpawner);
   manager->registerScreen("ingesting",1,ingestingSpawner);
-  
+  manager->registerScreen("jobdone",0,jobDoneSpawner);  
 #ifndef BOOT_SCREEN  
   char *args[2]={"50","1200"};
   manager->spawnScreen("idle",2,(const char **)args);

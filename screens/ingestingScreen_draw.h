@@ -108,7 +108,7 @@ static const int square[]={
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW2(); \
-            scanLine[index++]=c; \
+            index++; \
             if(!c) break; \
         } \
         ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
@@ -128,11 +128,16 @@ static const int square[]={
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW2(); \
-            scanLine[index++]=c; \
+            index++; \
             if(!c) break; \
-        } \
+        } 
+#define DRAW \        
         ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
-        ucg->getTft()->pushColors(scanLine,index);
+        ucg->getTft()->pushColors(fullLine,index);
+
+#define DRAW_BACK \        
+        ucg->getTft()->setAddrWindow(160-index-start,y+120,160-start,y+120); \
+        ucg->getTft()->pushColors(fullLine,index);
 
 uint16_t scanLine[80];
 /**
@@ -146,6 +151,23 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
         PREAMBLE
         int y=-xy;
         BODY
+        DRAW
+    } 
+}
+
+//----------------
+
+void ingestingScreen::quadrant3(Ucglib *ucg)
+{
+    
+      // 2nd quadrant
+    int fmula=_percent-50;    
+    for(int xy=0;xy<ray2;xy++)
+    {
+        PREAMBLE
+        int y=xy;
+        BODY;
+        DRAW_BACK;
     } 
 }
 //----------
@@ -159,31 +181,10 @@ void ingestingScreen::quadrant2(Ucglib *ucg)
         PREAMBLE
         int y=xy;
         BODY_INVERT
+        DRAW
     } 
 }
-
-
-//----------------
-
-void ingestingScreen::quadrant3(Ucglib *ucg)
-{
-    int lastx=-320;
-    for(int y=0;y<ray2;y++)
-      {
-        for(int x=-ray2+1;x<0;x++)
-        {
-            if(x<lastx) continue;
-            PRECHECK();
-            if(lastx==-320) lastx=x;
-            if(_percent>=75 && y>=0 && x<=0)
-            {
-                ucg->drawPixel(x+160,y+120);
-                continue;
-            }
-            COMPUTE_AND_DRAW()
-        } 
-      }
-}
+//------
 void ingestingScreen::quadrant4(Ucglib *ucg)
 {
     int lastx=-ray2;

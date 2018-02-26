@@ -26,12 +26,14 @@ public:
         {
             _percent=p;   
             for(int i=0;i<80;i++) 
-                t90[i]=0xffff;
-            t90[ray2]=0;
+            {
+                fullLine[i]=0xffff;
+                emptyLine[i]=0;
+            }
+            emptyLine[ray2]=0;
         }
         
         void quadrant1(Ucglib *ucg);
-        void quadrant1Full(Ucglib *ucg);
         void quadrant2(Ucglib *ucg);
         void quadrant2Full(Ucglib *ucg);
         void quadrant3(Ucglib *ucg);
@@ -45,7 +47,8 @@ public:
         int _percent;
         int _oldPercent;
         
-        uint16_t t90[ray2+1];
+        uint16_t emptyLine[ray2+1];
+        uint16_t fullLine[ray2+1];
 };
 
 #include "ingestingScreen_draw.h"
@@ -96,16 +99,21 @@ void ingestingScreen::drawx(Ucglib *ucg)
  */
 void ingestingScreen::drawAll(Ucglib *ucg)
 {       
-    if(_percent>=25)
-        quadrant1Full(ucg);
-    else
-        quadrant1(ucg);
-    if(_percent>=50)
-        quadrant2Full(ucg);
-    else
-        quadrant2(ucg);
-    quadrant3(ucg);
-    quadrant4(ucg);    
+    quadrant1(ucg);
+    if(_percent>25)
+    {
+        if(_percent>=50)
+            quadrant2Full(ucg);
+        else
+            quadrant2(ucg);
+        if(_percent>50)
+        {
+            quadrant3(ucg);
+            if(_percent>75)
+                quadrant4(ucg);    
+        }
+        
+    }
     
     ucg->setColor(0, 0, 0, 0);
     ucg->drawBox(140,128,5*12,12);

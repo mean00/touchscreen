@@ -148,20 +148,36 @@ static const int square[]={
 #define BODY_INVERT \
         if(p<minPercent) \ 
         { \
-            ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
-            ucg->getTft()->pushColors(fullLine,length); \
-            continue; \
-        }\
+            index=end-start; \            
+        } else \
         if(p>maxPercent) \
         { \
-            continue; \
-        } \
+            index=0; \
+        } else\
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW2(); \
             index++; \
-            if(!c) break; \
+            \
         } 
+             
+#define BODY_INVERT_Y \
+        if(p<minPercent) \ 
+        { \
+            index=end-start;\          
+        } else\
+        if(p>maxPercent) \
+        { \
+            index=0; \
+            continue; \
+        } else\
+        for(int x=start;x<end;x++) \
+        { \
+            COMPUTE_AND_DRAW2_Y(); \
+            index++; \
+        }   
+        
+        
 #define DRAW \        
         ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
         ucg->getTft()->pushColors(fullLine,index);
@@ -173,6 +189,10 @@ static const int square[]={
 #define DRAW_Y \        
         ucg->getTft()->setAddrWindow(160+xy,120+start,160+xy,120+start+index); \
         ucg->getTft()->pushColors(fullLine,index);
+
+#define DRAW_Y_BACK \        
+        ucg->getTft()->setAddrWindow(160-xy,120+start,160-xy,120+start+index); \
+        ucg->getTft()->pushColors(fullLine,index);
         
         
 uint16_t scanLine[80];
@@ -180,6 +200,7 @@ uint16_t scanLine[80];
  */
 void ingestingScreen::quadrant1(Ucglib *ucg)
 {      
+    
     // 1st quadrant
     int fmula=_percent;
     for(int xy=0;xy<ray2;xy++) 
@@ -193,7 +214,8 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
 
 //----------
 void ingestingScreen::quadrant2(Ucglib *ucg)
-{            
+{        
+
     // 2nd quadrant
     int fmula=_percent-25;
     if(fmula>25) fmula=25;
@@ -211,14 +233,14 @@ void ingestingScreen::quadrant2(Ucglib *ucg)
 void ingestingScreen::quadrant3(Ucglib *ucg)
 {
      // 3rd quadrant
-    int fmula=_percent-50;
-    if(fmula>50) fmula=50;
+    int fmula=75-_percent;
+    if(fmula<0) fmula=0;
     for(int xy=0;xy<ray2;xy++) // it is X actually
     {
         PREAMBLE
         int y=-xy;
-        BODY_Y
-        DRAW_Y
+        BODY_INVERT_Y
+        DRAW_Y_BACK
     } 
 }
 
@@ -231,7 +253,7 @@ void ingestingScreen::quadrant4(Ucglib *ucg)
     {      
         PREAMBLE
         int y=-xy;
-        BODY
-        DRAW
+        BODY_INVERT
+        DRAW_BACK
     } 
 }

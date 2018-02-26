@@ -12,9 +12,6 @@
 /**
  */
 
-#define button_width  100
-#define button_height  32
-
 #define button_baseline_y (ucg->getHeight() -84)
 #define button_baseline_x (160-60)
 
@@ -28,17 +25,7 @@ public:
         virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);    
 };
-/**
- */
-static void drawButton(Ucglib *ucg, int x, int y)
-{
-  int str_y = y + button_height / 2 + 8;
 
-  ucg->setColor(0, 255, 255, 255);
-    // TODO Center text!!!
-  ucg->drawString(x + 22+10, str_y, 0, " Ok");
-  ucg->drawRFrame(x, y, button_width, button_height, 2);
-}
 /**
  */
 void failureScreen::draw(Ucglib *ucg)
@@ -46,7 +33,7 @@ void failureScreen::draw(Ucglib *ucg)
     LOG("DRAWING failure");
 
     drawBitmap(ucg,160-80,60, (const uint8_t *)failure,160,60,0,0x1f<<11);
-    drawButton(ucg, button_baseline_x ,button_baseline_y);
+    drawButton(ucg, button_baseline_x ,button_baseline_y,"Ok");
 }
 void failureScreen::redraw(Ucglib *ucg,const char **arg)
 {

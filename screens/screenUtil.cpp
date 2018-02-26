@@ -8,7 +8,21 @@
 #include "stx_logo.h"
 /**
  */
+#include "screenUtil.h"
 #include "Adafruit_ILI9341_STM.h"
+
+/**
+ */
+void drawButton(Ucglib *ucg, int x, int y, char *text)
+{
+  int str_y = y + button_height / 2 + 8;
+
+  ucg->setColor(0, 255, 255, 255);
+    // TODO Center text!!!
+  ucg->drawString(x + 22+10, str_y, 0, text);
+  ucg->drawRFrame(x, y, button_width, button_height, 2);
+}
+
 // slow mode
 #if 0
 void drawBitmap(Ucglib *ucg,int wx,int wy, const uint8_t *data, int width, int height, int fgcolor,int bgcolor)

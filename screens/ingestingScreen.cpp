@@ -10,9 +10,6 @@
 /**
  */
 
-#define button_width  100
-#define button_height  32
-
 
 #define ray0 45
 #define ray  50

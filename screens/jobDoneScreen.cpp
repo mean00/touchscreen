@@ -12,8 +12,6 @@
 /**
  */
 
-#define button_width  100
-#define button_height  32
 
 #define button_baseline_y (ucg->getHeight() -84)
 #define button_baseline_x (160-60)
@@ -30,23 +28,12 @@ public:
 };
 /**
  */
-static void drawButton(Ucglib *ucg, int x, int y)
-{
-  int str_y = y + button_height / 2 + 8;
-
-  ucg->setColor(0, 255, 255, 255);
-    // TODO Center text!!!
-  ucg->drawString(x + 22+10, str_y, 0, " Ok");
-  ucg->drawRFrame(x, y, button_width, button_height, 2);
-}
-/**
- */
 void jobDoneScreen::draw(Ucglib *ucg)
 {
     LOG("DRAWING jobDone");
 
     drawBitmap(ucg,160-80,60, (const uint8_t *)done,160,60,0,0x1F<<5);
-    drawButton(ucg, button_baseline_x ,button_baseline_y);
+    drawButton(ucg, button_baseline_x ,button_baseline_y,"Ok");
 }
 void jobDoneScreen::redraw(Ucglib *ucg,const char **arg)
 {

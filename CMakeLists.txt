@@ -64,6 +64,7 @@ generate_arduino_firmware(touchscreen_demo
 			screens/screenUtil.cpp
             xpt/aXPT2046_Touchscreen.cpp
 			screens/idleScreen.cpp screens/bootScreen.cpp screens/queryScreen.cpp screens/ingestingScreen.cpp screens/jobDoneScreen.cpp
+			screens/failure.cpp
 			${EXTRA_SRC}
                 LIBS ${libPrefix}${LCD_LIB} 
                 PORT ${ARDUINO_DEFAULT_PORT}

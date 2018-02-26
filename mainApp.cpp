@@ -68,7 +68,7 @@ Ucglib  *ucg;
 void mySetup(void)
 {
     
-//  SPIClass *spi2=new SPIClass(2);    
+  SPIClass *spi2=new SPIClass(2);    
     
   SPI.begin();
   SPI.setBitOrder(MSBFIRST); // Set the SPI bit order
@@ -89,7 +89,7 @@ void mySetup(void)
   
   ucg->clearScreen();  
   ucg->setFont(ucg_font_helvB18_hr);//ucg_font_helvB18_tf
-  ts=new iliTouch(SPI,240,320,0,TS_CS_PIN,TS_INTERRUPT_PIN);
+  ts=new iliTouch(*spi2,240,320,0,TS_CS_PIN,TS_INTERRUPT_PIN);
   
   // start Screen Manager
   manager=new ScreenManager (ucg);
@@ -165,6 +165,7 @@ void myLoop(void)
   }
 #endif
 #if 1
+    SPI.setClockDivider (SPI_CLOCK_DIV16);
     bool touched=ts->press(x,y);
     if(touched)
     {        

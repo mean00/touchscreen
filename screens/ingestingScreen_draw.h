@@ -131,7 +131,15 @@ static const int square[]={
             if(!c) break; \
         } \
         
-#define BODY2 \       
+#define BODY_Y \  
+        if(p>maxPercent) \ 
+        { \
+            index=end-start; \
+        } else \
+        if(p<minPercent) \
+        { \
+            index=0; \            
+        } else \
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW2_Y(); \
@@ -210,7 +218,7 @@ void ingestingScreen::quadrant2(Ucglib *ucg)
     {
         PREAMBLE
         int y=xy;
-        BODY2
+        BODY_Y
         DRAW_Y
     } 
 }

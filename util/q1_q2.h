@@ -66,15 +66,18 @@
         if(p>maxPercent) \ 
         { \
             index=end-start; \
+            for(int i=0;i<index;i++) printf("*");printf("-"); \
         } else \
         if(p<minPercent) \
         { \
             index=0; \            
+            printf("-"); \
         } else \
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW_Q2(); \
             index++; \
+            if(c) printf("*"); else printf("-"); \
             if(!c) break; \
         } 
 

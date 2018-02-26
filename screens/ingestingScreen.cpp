@@ -125,6 +125,7 @@ void ingestingScreen::redraw(Ucglib *ucg,const char **arg)
     ucg->setColor(0, 255, 255, 255);
     _oldPercent=_percent;
     _percent=atoi(arg[0]);
+    
     drawAll(ucg);
 }
 

@@ -106,8 +106,17 @@ void queryScreen::draw(Ucglib *ucg)
 }
 void queryScreen::redraw(Ucglib *ucg,const char **arg)
 {
-    LOG("DRAWING query");
-    redrawAskIngest(ucg,_type); 
+    LOG("DRAWING query");    
+    int type=TYPE_USB;
+    if(atoi(arg[0])==1)
+        type=TYPE_SD;
+    if(type==_type)
+        redrawAskIngest(ucg,_type); 
+    else
+    {
+        _type=type;
+        draw(ucg);
+    }
 }
 
 static bool buttonMatch(int x, int bx)

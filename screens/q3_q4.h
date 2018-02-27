@@ -53,12 +53,11 @@
         } else \
         for(int x=start;x<end;x++) \
         { \
-        float r=0; \
+        float r=25; \
         if(y) r= (int)(50.*atan2(x,y)/M_PI); \
-        if(r< p) c=0xffff; else c=0x0; \
-            index++; \
+        if(r> p) c=0xffff; else c=0x0; \
+            scanLine[index++]=c; \
             DRAW_COLOR(c); \
-            if(!c) x=end; \
         } 
 
 // char bfer[20];sprintf(bfer,"<r=%d,p=%d,%d,%d>",r,p,minPercent); Serial.prinln(bfer); \        
@@ -69,7 +68,7 @@
         if(index)    \
         { \
             for(int i=0;i<index;i++) {\
-                ucg->getTft()->drawPixel(-start+160-i,120-y,fullLine[i]); \
+                ucg->getTft()->drawPixel(-start+160-i,120-y,scanLine[i]); \
             if(0) {\
             ucg->getTft()->setAddrWindow(-start+160,120-y,160-end-1,120-y); \
             ucg->getTft()->pushColors(fullLine,index); \

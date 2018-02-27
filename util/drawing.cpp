@@ -90,6 +90,7 @@ void q1(int _percent)
         PREAMBLE        
         for(int z=0;z<start;z++) printf(" ");
         BODY_Q1
+        if(!index) {printf("Z");break;}
         DRAW_Q1
     } 
 }
@@ -111,7 +112,7 @@ void pz(void)
 int main(int a,char **b)
 {
 
-    q1(21);
+    q1(7);
     //pz();
     printf("\n");
     return 0;

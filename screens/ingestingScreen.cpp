@@ -37,11 +37,16 @@ public:
         void quadrant3(Ucglib *ucg);
         void quadrant4(Ucglib *ucg);
         
-        void         drawAll(Ucglib *ucg);
+        
         virtual void draw(Ucglib *ucg);
-                void drawx(Ucglib *ucg);
         virtual void redraw(Ucglib *ucg,const char **arg);
+                
+        
+        
         virtual bool touched(Ucglib *ucg,int x, int y);
+        
+        
+        void         drawAll(Ucglib *ucg);
         int _percent;
         int _oldPercent;
         
@@ -55,65 +60,23 @@ public:
 
 /**
  */
-void ingestingScreen::drawx(Ucglib *ucg)
-{       
-
-    ucg->setColor(0, 255, 255, 255);
-    if(_oldPercent<25)
-    {
-        quadrant1(ucg);
-    }
-    if(_oldPercent<50)
-    {
-        // 2nd quadrant if > 25%        
-        if(_percent>=25)
-        {
-            quadrant2(ucg);
-        }
-    }
-     // 3nd quadrant if > 50%    
-    if(_oldPercent<75)
-    {
-        if(_percent>=50)
-        {
-            quadrant3(ucg);
-        }
-    }
-    // 4th quadrant
-    if(_percent>=75)
-    {
-        quadrant4(ucg);
-    }
-        
-
- next:
-    char str[10];
-    sprintf(str,"%02d %%",_percent);
-    ucg->getTft()->setTextColor(0xffff,0);
-    ucg->drawString(140,128,0,str);
-
-}
-/**
- */
 void ingestingScreen::drawAll(Ucglib *ucg)
 {  
-#if 0
-    quadrant3(ucg);
-    return;
-#else
-    quadrant1(ucg);
+    if(_oldPercent<25)
+        quadrant1(ucg);
     if(_percent>25)
     {
-        quadrant2(ucg);
+        if(_oldPercent<50)
+            quadrant2(ucg);
         if(_percent>50)
         {
-            quadrant3(ucg);
+            if(_oldPercent<75)
+                quadrant3(ucg);
             if(_percent>75)
                 quadrant4(ucg);    
         }
         
     }
-#endif
     ucg->getTft()-> fillRect(140,100,5*10,45,0);
     
     char str[10];

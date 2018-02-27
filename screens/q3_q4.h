@@ -80,13 +80,7 @@
 
 
 #define DRAW_Q3 \
-            if(0) \
-            {\
             ucg->getTft()->setAddrWindow(160-y,120+start,160-y,120+end); \
             ucg->getTft()->pushColors(scanLine,end-start);  \
-            } else {\
-            for(int z=start;z<end;z++) \
-                ucg->getTft()->drawPixel(160-y,120+z,scanLine[z-start]);\
-                }
 
 #endif

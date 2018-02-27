@@ -94,6 +94,22 @@ void q2(int _percent)
     } 
 }
 
+void q4(int _percent)
+{        
+
+    // 2nd quadrant
+    int fmula=_percent-75;
+    if(fmula>25) fmula=25;
+    for(int xy=0;xy<ray2;xy++) // it is X actually
+    {
+        printf("\n");
+        int y=xy;
+        PREAMBLE
+        for(int z=0;z<start;z++) printf(" ");
+        BODY_Q4
+        DRAW_Q2
+    } 
+}
 
 void pz(void)
 {
@@ -112,7 +128,7 @@ void pz(void)
 int main(int a,char **b)
 {
 
-    q2(26);
+    q4(95);
     //pz();
     printf("\n");
     return 0;

@@ -28,14 +28,14 @@
 #define DRAW_COLOR(x)  {}
 #endif
 #define BODY_Q1 \
-         if(  p>=maxPercent) \ 
+         if(  p>=maxPercent) \
         { \
             index=end-start; \
             DRAW_X(index); \
         } else \
         if( p<minPercent) \
         { \
-            index=0; \            
+            index=0; \
             DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \
@@ -46,22 +46,22 @@
             index++; \
             DRAW_COLOR(c); \
             if(!c) x=end; \
-        } \
+        } 
         
-#define BODY_Q2 \  
-        if(  p>maxPercent) \ 
+#define BODY_Q2 \
+        if(  p>maxPercent) \
         { \
             index=end-start; \
             DRAW_X(index); \
         } else \
         if( 0 &&  p<minPercent) \
         { \
-            index=0; \            
+            index=0; \
             DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \
         { \
-        float r=0; \        
+        float r=0; \
         if(x) r= (int)(50.*atan2(x,y)/M_PI); \
         if(r> p) c=0; else c=0xffff; \
         if(!c) x=end; \
@@ -73,7 +73,7 @@
              
         
 #ifndef DRAW_Q1
-#define DRAW_Q1 \        
+#define DRAW_Q1 \
         if(index)    \
         { \
             ucg->getTft()->setAddrWindow(start+160,120-y,160+end+1,120-y); \
@@ -81,7 +81,7 @@
         }
 
 
-#define DRAW_Q2 \        
+#define DRAW_Q2 \
         if(index)    \
         { \
         ucg->getTft()->setAddrWindow(160+xy,120+start,160+xy,120+start+index); \

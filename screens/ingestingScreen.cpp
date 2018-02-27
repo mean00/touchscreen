@@ -97,8 +97,10 @@ void ingestingScreen::drawx(Ucglib *ucg)
  */
 void ingestingScreen::drawAll(Ucglib *ucg)
 {  
+#if 0
     quadrant2(ucg);
     return;
+#else
     quadrant1(ucg);
     if(_percent>25)
     {
@@ -111,6 +113,7 @@ void ingestingScreen::drawAll(Ucglib *ucg)
         }
         
     }
+#endif
     ucg->getTft()-> fillRect(140,100,5*10,45,0);
     
     char str[10];

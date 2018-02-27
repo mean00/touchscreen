@@ -42,21 +42,21 @@
         
 #define BODY_Q4 \
         index=end-start-1; \
-         if(0&&  p>maxPercent) \
+         if( 0&& p>maxPercent) \
         { \
-            index=end-start; \
+            memset(scanLine,0,2*(end-start)); \
             DRAW_X(index); \
         } else \
-        if( 0&& p<minPercent) \
+        if( 0 && p<=minPercent) \
         { \
-            index=0; \
+            memset(scanLine,0xff,2*(end-start)); \
             DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \
         { \
         float r=25; \
         if(y) r= (int)(50.*atan2(x,y)/M_PI); \
-        if(r> p) c=0xffff; else c=0x0; \
+        if(r>= p) c=0xffff; else c=0x0; \
             scanLine[index--]=c; \
             DRAW_COLOR(c); \
         } 

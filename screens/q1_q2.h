@@ -42,7 +42,7 @@
         { \
         float r=25; \
         if(y) r= 25-(int)(50.*atan2(y,x)/M_PI); \
-        if(r>= p) c=0; else c=0xffff; \
+        if(r> p) c=0; else c=0xffff; \
             index++; \
             DRAW_COLOR(c); \
             if(!c) x=end; \

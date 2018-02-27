@@ -60,6 +60,22 @@ static const int square[]={
         if(y<0) ry=-y; else ry=y; 
 int fullLine[90];
 
+
+void q1(int _percent)
+{
+    int fmula=_percent;
+    //for(int xy=ray2-1;xy>0;xy--) 
+    for(int xy=ray2-1;xy>=0;xy--) 
+    {   
+        printf("\n");
+        int y=xy;
+        PREAMBLE        
+        for(int z=0;z<start;z++) printf(" ");
+        BODY_Q1
+        if(!index) {printf("Z");break;}
+        DRAW_Q1
+    } 
+}
 //----------
 void q2(int _percent)
 {        
@@ -79,22 +95,6 @@ void q2(int _percent)
 }
 
 
-void q1(int _percent)
-{
-    int fmula=_percent;
-    //for(int xy=ray2-1;xy>0;xy--) 
-    for(int xy=ray2-1;xy>=0;xy--) 
-    {   
-        printf("\n");
-        int y=xy;
-        PREAMBLE        
-        for(int z=0;z<start;z++) printf(" ");
-        BODY_Q1
-        if(!index) {printf("Z");break;}
-        DRAW_Q1
-    } 
-}
-
 void pz(void)
 {
     //for(int xy=ray2-1;xy>0;xy--) 
@@ -112,7 +112,7 @@ void pz(void)
 int main(int a,char **b)
 {
 
-    q1(7);
+    q2(26);
     //pz();
     printf("\n");
     return 0;

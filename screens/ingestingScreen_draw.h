@@ -29,7 +29,6 @@ static const int square[]={
       
        
 #define PREAMBLE \
-        int ry; \        
         int dex=(xy)*4; \
         int start=precalc[dex]; \
         int length=precalc[dex+1]; \
@@ -39,7 +38,7 @@ static const int square[]={
         int index=0; \
         int c; \
         int p=fmula; \
-        if(y<0) ry=-y; else ry=y; 
+        
 
 #include "q1_q2.h"
 #include "q3_q4.h"
@@ -52,11 +51,13 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
     
     // 1st quadrant
     int fmula=_percent;
-    for(int xy=0;xy<ray2;xy++) 
+    if(fmula>25) fmula=25;
+    for(int xy=ray2-1;xy>=0;xy--) 
     {   
-        int y=-xy;
+        int y=xy;
         PREAMBLE        
         BODY_Q1
+        if(!index) break;
         DRAW_Q1
     } 
 }
@@ -64,12 +65,11 @@ void ingestingScreen::quadrant1(Ucglib *ucg)
 //----------
 void ingestingScreen::quadrant2(Ucglib *ucg)
 {        
-
-    // 2nd quadrant
+   // 2nd quadrant
     int fmula=_percent-25;
     if(fmula>25) fmula=25;
     for(int xy=0;xy<ray2;xy++) // it is X actually
-    {
+    {        
         int y=xy;
         PREAMBLE
         BODY_Q2

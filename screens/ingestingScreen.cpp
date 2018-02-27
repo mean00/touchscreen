@@ -96,7 +96,9 @@ void ingestingScreen::drawx(Ucglib *ucg)
 /**
  */
 void ingestingScreen::drawAll(Ucglib *ucg)
-{       
+{  
+    quadrant2(ucg);
+    return;
     quadrant1(ucg);
     if(_percent>25)
     {
@@ -139,7 +141,7 @@ void ingestingScreen::draw(Ucglib *ucg)
     ucg->setColor(0, 255, 255, 255);
     ucg->drawCircle(160,120,ray0,UCG_DRAW_ALL);
     ucg->drawCircle(160,120,ray3,UCG_DRAW_ALL);
-    drawx(ucg);
+    drawAll(ucg);
     drawButton(ucg, base_x ,base_y,"Stop");
 
 }

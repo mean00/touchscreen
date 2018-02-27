@@ -6,7 +6,7 @@
    float result=0; \
         if(y)\
         { \
-            result = (int)(50.*atan2(ry,x)/M_PI); \
+            result = (int)(50.*atan2(y,x)/M_PI); \
             if(result<-50) result=-50; \
             if(result>50) result=50; \
             result+=25; \

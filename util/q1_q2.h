@@ -25,10 +25,10 @@
 #ifndef DRAW_X
 #define DRAW_X(index) {}
 #define DRAW_O()  {}
-#define DRAW_COLOR()  {}
+#define DRAW_COLOR(x)  {}
 #endif
 #define BODY_Q1 \
-         if(  p>maxPercent) \ 
+         if(  p>=maxPercent) \ 
         { \
             index=end-start; \
             DRAW_X(index); \
@@ -42,38 +42,40 @@
         { \
         float r=25; \
         if(y) r= 25-(int)(50.*atan2(y,x)/M_PI); \
-        if(r>= _percent) c=0; else c=0xffff; \
-            index++; \
-            DRAW_COLOR(c); \
-            if(!c) x=end; \
+        if(r>= p) c=0; else c=0xffff; \
+        index++; \
+        DRAW_COLOR(c); \
+        if(!c) x=end; \
         } \
         
 #define BODY_Q2 \  
-        if(p>maxPercent) \ 
+        if( 0 &&    p>maxPercent) \ 
         { \
             index=end-start; \
-            for(int i=0;i<index;i++) printf("*");printf("-"); \
+            DRAW_X(index); \
         } else \
-        if(p<minPercent) \
+        if( 0 &&  p<minPercent) \
         { \
             index=0; \            
-            printf("-"); \
+            DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \
         { \
-            COMPUTE_AND_DRAW_Q2(); \
-            index++; \
-            if(c) printf("*"); else printf("-"); \
-            if(!c) break; \
+        float r=0; \
+        if(x) r= (int)(50.*atan2(x,y)/M_PI); \
+        if(r> p) c=0; else c=0xffff; \
+        index++; \
+        DRAW_COLOR(c); \
         } 
-
+        //printf("<%d,%d,d>",minPercent,maxPercent,fmula); \
+ 
              
         
 #ifndef DRAW_Q1
 #define DRAW_Q1 \        
         if(index)    \
         { \
-            ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
+            ucg->getTft()->setAddrWindow(start+160,120-y,160+end+1,120-y); \
             ucg->getTft()->pushColors(fullLine,index); \
         }
 

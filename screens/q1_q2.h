@@ -49,7 +49,7 @@
         } \
         
 #define BODY_Q2 \  
-        if( 0 &&    p>maxPercent) \ 
+        if(  p>maxPercent) \ 
         { \
             index=end-start; \
             DRAW_X(index); \

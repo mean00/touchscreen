@@ -98,7 +98,7 @@ void ingestingScreen::quadrant4(Ucglib *ucg)
 {
     
     // 1st quadrant
-    int fmula=_percent-75;
+    int fmula=100-_percent;
     if(fmula>25) fmula=25;
     for(int xy=ray2-1;xy>=0;xy--) 
     {   

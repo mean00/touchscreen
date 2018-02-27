@@ -41,21 +41,21 @@
         } \
         
 #define BODY_Q4 \
-         if(  p>maxPercent) \
+         if(0&&  p>maxPercent) \
         { \
             index=end-start; \
             DRAW_X(index); \
         } else \
-        if( p<minPercent) \
+        if( 0&& p<minPercent) \
         { \
             index=0; \
             DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \
         { \
-        float r=25; \
-        if(y) r= 25-(int)(50.*atan2(y,x)/M_PI); \
-        if(r>= p) c=0; else c=0xffff; \
+        float r=0; \
+        if(y) r= (int)(50.*atan2(x,y)/M_PI); \
+        if(r< p) c=0xffff; else c=0x0; \
             index++; \
             DRAW_COLOR(c); \
             if(!c) x=end; \

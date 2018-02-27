@@ -77,10 +77,10 @@ void q1(int _percent)
 {
     int fmula=_percent;
     //for(int xy=ray2-1;xy>0;xy--) 
-    for(int xy=0;xy<ray2;xy++) 
+    for(int xy=ray2-1;xy>=0;xy--) 
     {   
         printf("\n");
-        int y=-xy;
+        int y=xy;
         PREAMBLE        
         for(int z=0;z<start;z++) printf(" ");
         BODY_Q1
@@ -88,12 +88,25 @@ void q1(int _percent)
     } 
 }
 
+void pz(void)
+{
+    //for(int xy=ray2-1;xy>0;xy--) 
+    for(int xy=0;xy<ray2;xy++) 
+    {   
+        int dex=xy*4;
+        int x=precalc[dex];
+        int result = (int)(50.*atan2(x,xy)/M_PI); \
+        printf("%d,%d:%d\n",x,xy,result);
+    
+    } 
+}
 
 
 int main(int a,char **b)
 {
 
-    q2(47);
+    q1(20);
+    //pz();
     printf("\n");
     return 0;
 }

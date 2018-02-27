@@ -2,22 +2,16 @@
 
 #define COMPUTE_AND_DRAW_Q1() \
 {\
-   float result=0; \
-        if(y)\
+   float r=0; \
+        if(y) \
         { \
-            result = (int)(50.*atan2(y,x)/M_PI); \
-            if(result<-50) result=-50; \
-            if(result>50) result=50; \
-            result+=25; \
-            if(result<0) result=result+100; \
+            r= (int)(50.*atan2(y,x)/M_PI); \
         } \
         else\
         {\
-            if(x>0) result=25;\
-                else \
-                    result=75;\
+            r=25;\
         } \
-        if(result > _percent) c=0; \
+        if(r< _percent) c=0; \
             else c=0xffff; \
         }
 #define COMPUTE_AND_DRAW_Q2() \
@@ -37,29 +31,28 @@
                 else \
                     result=75;\
         } \
-        if(result > _percent) c=0; \
+        if(result < _percent) c=0; \
             else c=0xffff; \
         }
 
       
 
 #define BODY_Q1 \
-         if(p>maxPercent) \ 
+         if( 0 && p>maxPercent) \ 
         { \
             index=end-start; \
-            for(int i=0;i<index;i++) printf("*");printf("-"); \
+            for(int i=0;i<index;i++) printf("X");printf("-"); \
         } else \
-        if(p<minPercent) \
+        if(0 && p+1<minPercent) \
         { \
             index=0; \            
-            printf("-"); \
+            printf("O"); \
         } else \
         for(int x=start;x<end;x++) \
         { \
             COMPUTE_AND_DRAW_Q1(); \
             index++; \
             if(c) printf("*"); else printf("-"); \
-            if(!c) break; \
         } \
         
 #define BODY_Q2 \  

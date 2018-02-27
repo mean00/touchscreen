@@ -55,12 +55,12 @@
         index=0; \
         if( 0 && p>maxPercent) \
         { \
-            index=end-start; \
+            memset(scanLine,0xffff,2*(end-start)); \
             DRAW_X(index); \
         } else \
         if( 0 &&  p<minPercent) \
         { \
-            index=0; \
+            memset(scanLine,0x0,2*(end-start)); \
             DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \

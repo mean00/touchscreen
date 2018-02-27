@@ -25,23 +25,32 @@
 
 
 #define BODY_Q3 \
-         if(p>maxPercent) \
+        index=end-start-1; \
+        if( 0 && p>maxPercent) \
         { \
             index=end-start; \
+            DRAW_X(index); \
         } else \
-        if(p<minPercent) \
+        if( 0 &&  p<minPercent) \
         { \
             index=0; \
+            DRAW_O(); \
         } else \
         for(int x=start;x<end;x++) \
         { \
-            COMPUTE_AND_DRAW_Q3(); \
-            index++; \
-            if(!c) break; \
-        } \
+        int r=0;\
+        if(y)\
+             r= (int)(50.*atan2(y,x)/M_PI); \        
+        if(r< p) c=0xffff; else c=0;   \
+        scanLine[index--]=c; \
+        DRAW_COLOR(c); \
+        } 
+        
+        //if(x==start) {char bfer[70];sprintf(bfer,"::x=%d, y=%d,r=%d,p=%d,%d,%d>",x,y,r,p,minPercent,maxPercent); Serial.println(bfer); }\
+        
         
 #define BODY_Q4 \
-        index=end-start-1; \
+        index=0; \
          if( 0&& p>maxPercent) \
         { \
             memset(scanLine,0,2*(end-start)); \
@@ -55,9 +64,9 @@
         for(int x=start;x<end;x++) \
         { \
         float r=25; \
-        if(y) r= (int)(50.*atan2(x,y)/M_PI); \
-        if(r>= p) c=0xffff; else c=0x0; \
-            scanLine[index--]=c; \
+        if(y) r= (int)(50.*atan2(x,y)/M_PI); \        
+        if(r> p) c=0xffff; else c=0x0; \
+            scanLine[index++]=c; \
             DRAW_COLOR(c); \
         } 
 
@@ -71,7 +80,13 @@
 
 
 #define DRAW_Q3 \
-        ucg->getTft()->setAddrWindow(160+xy,120+start,160+xy,120+start+index); \
-        ucg->getTft()->pushColors(fullLine,index);
+            if(0) \
+            {\
+            ucg->getTft()->setAddrWindow(160-y,120+start,160-y,120+end); \
+            ucg->getTft()->pushColors(scanLine,end-start);  \
+            } else {\
+            for(int z=start;z<end;z++) \
+                ucg->getTft()->drawPixel(160-y,120+z,scanLine[end-z-1]);\
+                }
 
 #endif

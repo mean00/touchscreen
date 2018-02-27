@@ -82,11 +82,11 @@ void ingestingScreen::quadrant2(Ucglib *ucg)
 void ingestingScreen::quadrant3(Ucglib *ucg)
 {
      // 3rd quadrant
-    int fmula=75-_percent;
-    if(fmula<0) fmula=0;
+    int fmula=_percent-50;
+    if(fmula>25) fmula=25;
     for(int xy=0;xy<ray2;xy++) // it is X actually
     {
-        int y=-xy;
+        int y=xy;
         PREAMBLE
         BODY_Q3
         DRAW_Q3

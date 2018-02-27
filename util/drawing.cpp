@@ -12,7 +12,13 @@
 #define ray2 80
 #define ray3 85
 
+#define TESTU
+#define DRAW_Q1 {}
+#define DRAW_Q2 {}
 
+#define DRAW_X(index)  for(int i=0;i<index;i++) printf("X");printf("-"); 
+#define DRAW_O()  printf("O");
+#define DRAW_COLOR(color)     if(color) printf("*"); else printf("-"); 
 
 #include "precalc.h"
 #include "q1_q2.h"
@@ -105,7 +111,7 @@ void pz(void)
 int main(int a,char **b)
 {
 
-    q1(20);
+    q1(21);
     //pz();
     printf("\n");
     return 0;

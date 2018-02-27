@@ -41,6 +41,7 @@
         } \
         
 #define BODY_Q4 \
+        index=end-start-1; \
          if(0&&  p>maxPercent) \
         { \
             index=end-start; \
@@ -56,7 +57,7 @@
         float r=25; \
         if(y) r= (int)(50.*atan2(x,y)/M_PI); \
         if(r> p) c=0xffff; else c=0x0; \
-            scanLine[index++]=c; \
+            scanLine[index--]=c; \
             DRAW_COLOR(c); \
         } 
 
@@ -65,15 +66,8 @@
 #ifndef DRAW_Q3      
 
 #define DRAW_Q4 \
-        if(index)    \
-        { \
-            for(int i=0;i<index;i++) {\
-                ucg->getTft()->drawPixel(-start+160-i,120-y,scanLine[i]); \
-            if(0) {\
-            ucg->getTft()->setAddrWindow(-start+160,120-y,160-end-1,120-y); \
-            ucg->getTft()->pushColors(fullLine,index); \
-            }}\
-        }
+            ucg->getTft()->setAddrWindow(160-end,120-y,160-start,120-y); \
+            ucg->getTft()->pushColors(scanLine,end-start); 
 
 
 #define DRAW_Q3 \

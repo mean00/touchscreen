@@ -28,7 +28,7 @@
 #define DRAW_COLOR(x)  {}
 #endif
 #define BODY_Q1 \
-         if(  p>=maxPercent) \
+         if(  p>maxPercent) \
         { \
             index=end-start; \
             DRAW_X(index); \

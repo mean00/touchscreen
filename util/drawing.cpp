@@ -128,7 +128,7 @@ void pz(void)
 int main(int a,char **b)
 {
 
-    q4(95);
+    q1(7);
     //pz();
     printf("\n");
     return 0;

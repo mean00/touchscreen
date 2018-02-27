@@ -41,7 +41,7 @@
         } \
         
 #define BODY_Q4 \
-         if(  p>=maxPercent) \
+         if(  p>maxPercent) \
         { \
             index=end-start; \
             DRAW_X(index); \
@@ -59,12 +59,22 @@
             index++; \
             DRAW_COLOR(c); \
             if(!c) x=end; \
-        } \
-        
-#ifndef DRAW_Q3        
+        } 
+
+// char bfer[20];sprintf(bfer,"<r=%d,p=%d,%d,%d>",r,p,minPercent); Serial.prinln(bfer); \        
+
+#ifndef DRAW_Q3      
+
 #define DRAW_Q4 \
-        ucg->getTft()->setAddrWindow(start+160,y+120,160+end+1,y+120); \
-        ucg->getTft()->pushColors(fullLine,index);
+        if(index)    \
+        { \
+            for(int i=0;i<index;i++) {\
+                ucg->getTft()->drawPixel(-start+160-i,120-y,fullLine[i]); \
+            if(0) {\
+            ucg->getTft()->setAddrWindow(-start+160,120-y,160-end-1,120-y); \
+            ucg->getTft()->pushColors(fullLine,index); \
+            }}\
+        }
 
 
 #define DRAW_Q3 \

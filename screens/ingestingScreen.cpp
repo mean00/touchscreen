@@ -97,8 +97,8 @@ void ingestingScreen::drawx(Ucglib *ucg)
  */
 void ingestingScreen::drawAll(Ucglib *ucg)
 {  
-#if 0
-    quadrant2(ucg);
+#if 1
+    quadrant4(ucg);
     return;
 #else
     quadrant1(ucg);

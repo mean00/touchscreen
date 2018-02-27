@@ -47,7 +47,7 @@ static const int square[]={
 };
     
 #define PREAMBLE \
-        int ry; \        
+        int ry; \
         int dex=(xy)*4; \
         int start=precalc[dex]; \
         int length=precalc[dex+1]; \
@@ -127,8 +127,8 @@ void pz(void)
 
 int main(int a,char **b)
 {
-
-    q1(7);
+    int p=98;
+    q4(p);
     //pz();
     printf("\n");
     return 0;

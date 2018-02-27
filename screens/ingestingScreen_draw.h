@@ -96,13 +96,16 @@ void ingestingScreen::quadrant3(Ucglib *ucg)
 //------
 void ingestingScreen::quadrant4(Ucglib *ucg)
 {
-     // 1st quadrant
-    int fmula=100-_percent;
-    for(int xy=0;xy<ray2;xy++) //y 
-    {      
-        int y=-xy;
-        PREAMBLE
+    
+    // 1st quadrant
+    int fmula=_percent-75;
+    if(fmula>25) fmula=25;
+    for(int xy=ray2-1;xy>=0;xy--) 
+    {   
+        int y=xy;
+        PREAMBLE        
         BODY_Q4
+        if(!index) break;
         DRAW_Q4
     } 
 }

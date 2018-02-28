@@ -95,7 +95,7 @@ void mySetup(void)
   
   // start Screen Manager
   manager=new ScreenManager (ucg);
-  manager->registerScreen("idle",2,dummySpawner);
+  manager->registerScreen("idle",3,dummySpawner);
   manager->registerScreen("boot",0,bootSpawner);
   manager->registerScreen("query",1,querySpawner);
   manager->registerScreen("ingesting",1,ingestingSpawner);

@@ -12,15 +12,21 @@
 class dummyScreen : public Screen
 {
 public:
-        dummyScreen(int bat,int freespace)
+        dummyScreen(int bat,int freespace,char *txt)
         {
-            _bat=bat;
+            _bat=bat;            
             _free=freespace;
+            _txt=strdup(txt);
+        }
+        ~dummyScreen()
+        {
+            free(_txt);
         }
         virtual void draw(Ucglib *ucg);
         virtual void redraw(Ucglib *ucg,const char **arg);
         virtual bool touched(Ucglib *ucg,int x, int y);    
         int          _bat,_free;
+        char        *_txt;
 };
 /**
  */
@@ -118,6 +124,13 @@ void dummyScreen::redraw(Ucglib *ucg,const char **arg)
 {
 
  LOG("DRAWING idle");
+ if(arg)
+ {
+     free(_txt);
+     _txt=strdup(arg[2]);
+     _bat=atoi(arg[0]);
+     _free=atoi(arg[1]);
+ }
   /* 
    * Battery
    */
@@ -140,8 +153,10 @@ void dummyScreen::redraw(Ucglib *ucg,const char **arg)
   {
       sprintf(str,"  Free : %d GB  ",sz);
   }
+  ucg->getTft()-> fillRect(0,100,320,130,0);
+  ucg->setColor(0, 255, 255, 255); // withe color for the text
   centeredPrint(ucg,str,130);
-  centeredPrint(ucg,"  Mon Jan 02 15:04  ",190);
+  centeredPrint(ucg,_txt,190);
 
   
  
@@ -159,7 +174,8 @@ Screen *dummySpawner(const char **args)
 {
     int bat=atoi(args[0]);
     int fre=atoi(args[1]);
-    return new dummyScreen(bat,fre);
+    char *txt=(char *)args[2];
+    return new dummyScreen(bat,fre,txt);
 }
 
 //EOF

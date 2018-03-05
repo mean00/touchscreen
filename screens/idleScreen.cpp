@@ -13,6 +13,13 @@
 /**
  */
 
+#define BATTERY_BASELINE 40
+#define TEXT1_BASELINE   (190)
+#define TEXT2_BASELINE   (220)
+#define TEXT_HEIGHT 16
+#define TEXT_WIDTH  12
+
+
 class dummyScreen : public Screen
 {
 public:
@@ -47,8 +54,8 @@ static int bat2bar(int bat)
 int mkColor(int r,int g, int b)
 {
     r=((0x1f*r)>>8);
-    g=((0x1f*r)>>8);
-    b=((0x1f*r)>>8);
+    g=((0x1f*g)>>8);
+    b=((0x1f*b)>>8);
     return (r<<11)+(g<<5)+b;
 }
 
@@ -61,20 +68,20 @@ void dummyScreen::drawBattery(Ucglib *ucg)
     switch(_bat)
     {
         default: 
-        case 3:            bitmap=bat0; fgcolor=mkColor(233,29,33);break;
-        case 2:            bitmap=bat1; fgcolor=mkColor(233,29,33);break;
-        case 1:            bitmap=bat2; fgcolor=mkColor(233,29,33);break;
-        case 0:            bitmap=bat3; fgcolor=mkColor(233,29,33);break;
+        case 3:            bitmap=bat0; fgcolor=mkColor(0,255,0);break;
+        case 2:            bitmap=bat1; fgcolor=mkColor(45,106,218);break;
+        case 1:            bitmap=bat2; fgcolor=mkColor(207,207,44);break;
+        case 0:            bitmap=bat3; fgcolor=mkColor(255,0,0);break;
         
     }    
-    drawBitmap(ucg,80,10,(const uint8_t *)bitmap,160,106,fgcolor,0);    
+    drawBitmap(ucg,80,BATTERY_BASELINE,(const uint8_t *)bitmap,160,106,fgcolor,0);    
  
 }
 /**
  */
 static void centeredPrint(Ucglib *ucg,char *str,int line)
 {
-    int w=ucg->getStrWidth(str);
+    int w=TEXT_WIDTH*strlen(str);
     w=(ucg->getWidth()-w)/2;
     if(w<0) w=0;
     ucg->drawString(w, line, 0, str);
@@ -123,10 +130,11 @@ void dummyScreen::redraw(Ucglib *ucg,const char **arg)
   {
       sprintf(str,"  Free : %d GB  ",sz);
   }
-  ucg->getTft()-> fillRect(0,120,320,130,0);
+  ucg->getTft()-> fillRect(0,TEXT1_BASELINE,320,TEXT1_BASELINE+TEXT_HEIGHT,0);
+  ucg->getTft()-> fillRect(0,TEXT2_BASELINE,320,TEXT2_BASELINE+TEXT_HEIGHT,0);
   ucg->setColor(0, 255, 255, 255); // withe color for the text
-  centeredPrint(ucg,str,150);
-  centeredPrint(ucg,_txt,210);
+  centeredPrint(ucg,str,TEXT1_BASELINE);
+  centeredPrint(ucg,_txt,TEXT2_BASELINE);
  
 }
 
